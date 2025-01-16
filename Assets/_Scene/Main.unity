@@ -318,7 +318,7 @@ MonoBehaviour:
   m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 720, y: 1080}
+  m_ReferenceResolution: {x: 720, y: 1280}
   m_ScreenMatchMode: 1
   m_MatchWidthOrHeight: 1
   m_PhysicalUnit: 3
@@ -381,7 +381,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74cd2a90ead64f94eb81d759453800b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minSwipeDistance: 10
+  minSwipeDistance: 4
   upPolygon: {fileID: 1267491977}
   downPolygon: {fileID: 1314394698}
   leftPolygon: {fileID: 377873215}
@@ -563,7 +563,7 @@ MonoBehaviour:
     PointListProperties:
     - GeneratorData:
         Generator: 0
-        NeedsUpdate: 1
+        NeedsUpdate: 0
         Center: {x: 0, y: 0}
         Width: 50
         Height: 50
@@ -730,10 +730,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseUrl: https://firestore.googleapis.com/v1/projects/polygonus-fantarunner/databases/(default)/documents/Session/A1B1
-  session:
-    fields:
-      direction:
-        integerValue: 
 --- !u!4 &532680875
 Transform:
   m_ObjectHideFlags: 0
@@ -964,7 +960,7 @@ MonoBehaviour:
     PointListProperties:
     - GeneratorData:
         Generator: 0
-        NeedsUpdate: 1
+        NeedsUpdate: 0
         Center: {x: 0, y: 0}
         Width: 50
         Height: 50
@@ -1091,7 +1087,7 @@ MonoBehaviour:
     PointListProperties:
     - GeneratorData:
         Generator: 0
-        NeedsUpdate: 1
+        NeedsUpdate: 0
         Center: {x: 0, y: 0}
         Width: 50
         Height: 50
@@ -1218,7 +1214,7 @@ MonoBehaviour:
     PointListProperties:
     - GeneratorData:
         Generator: 0
-        NeedsUpdate: 1
+        NeedsUpdate: 0
         Center: {x: 0, y: 0}
         Width: 50
         Height: 50

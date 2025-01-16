@@ -1,5 +1,7 @@
 using Cysharp.Threading.Tasks;
 using System;
+using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -8,11 +10,25 @@ public class FirestoreSender : MonoBehaviour
     public static Action<SwipeDirection> directionToSend;
 
     [SerializeField, TextArea] private string baseUrl;
-    [SerializeField] private Document session = new();
-
-    private int value = 0;
 
     private const string _patch = "PATCH";
+    private const string _json = @"
+    {{
+        ""fields"": {{
+            ""direction"": {{
+                ""integerValue"": ""{0}""
+            }}
+        }}
+    }}";
+
+    private readonly Dictionary<SwipeDirection, string> values = new()
+    {
+        { SwipeDirection.None, "0" },
+        { SwipeDirection.Up, "1" },
+        { SwipeDirection.Down, "2" },
+        { SwipeDirection.Left, "3" },
+        { SwipeDirection.Right, "4" },
+    };
 
     private void Awake()
     {
@@ -26,33 +42,16 @@ public class FirestoreSender : MonoBehaviour
 
     private void SendDirection(SwipeDirection direction)
     {
-        value = (int)direction;
-        session.fields.direction.integerValue = value.ToString();
-        SendDirectionToFirestore(JsonUtility.ToJson(session)).Forget();
+        SendUnityWebRequest(string.Format(_json, values[direction])).Forget();
     }
 
-    private async UniTaskVoid SendDirectionToFirestore(string json)
+    private async UniTaskVoid SendUnityWebRequest(string json)
     {
-        using UnityWebRequest webRequest = UnityWebRequest.Put(baseUrl, json);
-        webRequest.method = _patch;
+        UnityWebRequest webRequest = new(baseUrl, _patch)
+        {
+            uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json))
+        };
+
         await webRequest.SendWebRequest();
-    }
-}
-
-[Serializable]
-public class Document
-{
-    public Fields fields;
-
-    [Serializable]
-    public class Fields
-    {
-        public Direction direction;
-    }
-
-    [Serializable]
-    public class Direction
-    {
-        public string integerValue;
     }
 }

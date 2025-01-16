@@ -1,16 +1,19 @@
-using UnityEngine;
+using System;
 
-public class FirestoreData : MonoBehaviour
+[Serializable]
+public class FirestoreData
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public Fields fields;
+
+    [Serializable]
+    public class Fields
     {
-        
+        public Direction direction;
     }
 
-    // Update is called once per frame
-    void Update()
+    [Serializable]
+    public class Direction
     {
-        
+        public string integerValue;
     }
 }
