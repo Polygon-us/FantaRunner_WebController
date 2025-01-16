@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 using UnityEngine.Networking;
-using System.Net.Http;
 
 public class FirestoreSender : MonoBehaviour
 {
@@ -43,8 +42,7 @@ public class FirestoreSender : MonoBehaviour
 
     private void SendDirection(SwipeDirection direction)
     {
-        //SendUnityWebRequest(string.Format(_json, values[direction])).Forget();
-        SendHttpClient(string.Format(_json, values[direction])).Forget();
+        SendUnityWebRequest(string.Format(_json, values[direction])).Forget();
     }
 
     private async UniTaskVoid SendUnityWebRequest(string json)
@@ -55,20 +53,5 @@ public class FirestoreSender : MonoBehaviour
         };
 
         await webRequest.SendWebRequest();
-    }
-
-    private readonly HttpClient client = new();
-    private readonly HttpMethod method = new(_patch);
-    private HttpRequestMessage request;
-    private const string _mediaType = "application/json";
-
-    private async UniTaskVoid SendHttpClient(string json)
-    {
-        request = new(method, baseUrl)
-        {
-            Content = new StringContent(json, Encoding.UTF8, _mediaType)
-        };
-
-        await client.SendAsync(request);
     }
 }
