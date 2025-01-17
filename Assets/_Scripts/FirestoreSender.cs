@@ -1,4 +1,3 @@
-using Cysharp.Threading.Tasks;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -33,16 +32,11 @@ public class FirestoreSender : MonoBehaviour
 
     private void SendDirection(SwipeDirection direction)
     {
-        SendUnityWebRequest(values[direction]).Forget();
-    }
-
-    private async UniTaskVoid SendUnityWebRequest(byte[] bytes)
-    {
         UnityWebRequest webRequest = new(baseUrl, _put)
         {
-            uploadHandler = new UploadHandlerRaw(bytes)
+            uploadHandler = new UploadHandlerRaw(values[direction])
         };
 
-        await webRequest.SendWebRequest();
+        webRequest.SendWebRequest();
     }
 }
