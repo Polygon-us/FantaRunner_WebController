@@ -62,7 +62,6 @@ public class SwipeManager : MonoBehaviour
         FirestoreSender.directionToSend?.Invoke(direction);
 
         UpdateShadows(direction);
-        UiMeshesUpdate();
     }
 
     private SwipeDirection GetSwipeDirection(Vector2 swipeDirection)
@@ -83,6 +82,8 @@ public class SwipeManager : MonoBehaviour
         downPolygon.ShadowProperties.ShowShadows = direction == SwipeDirection.Down;
         leftPolygon.ShadowProperties.ShowShadows = direction == SwipeDirection.Left;
         rightPolygon.ShadowProperties.ShowShadows = direction == SwipeDirection.Right;
+
+        UiMeshesUpdate();
     }
 
     private void UiMeshesUpdate()
@@ -99,5 +100,7 @@ public class SwipeManager : MonoBehaviour
         downPolygon.ShadowProperties.ShowShadows = false;
         leftPolygon.ShadowProperties.ShowShadows = false;
         rightPolygon.ShadowProperties.ShowShadows = false;
+
+        UiMeshesUpdate();
     }
 }
