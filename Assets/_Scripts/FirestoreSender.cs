@@ -1,7 +1,6 @@
 using Cysharp.Threading.Tasks;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -11,23 +10,15 @@ public class FirestoreSender : MonoBehaviour
 
     [SerializeField, TextArea] private string baseUrl;
 
-    private const string _patch = "PATCH";
-    private const string _json = @"
-    {{
-        ""fields"": {{
-            ""direction"": {{
-                ""integerValue"": ""{0}""
-            }}
-        }}
-    }}";
+    private const string _put = "PUT";
 
-    private readonly Dictionary<SwipeDirection, string> values = new()
+    private readonly Dictionary<SwipeDirection, byte[]> values = new()
     {
-        { SwipeDirection.None, "0" },
-        { SwipeDirection.Up, "1" },
-        { SwipeDirection.Down, "2" },
-        { SwipeDirection.Left, "3" },
-        { SwipeDirection.Right, "4" },
+        { SwipeDirection.None, new byte[] { 48 } },
+        { SwipeDirection.Up, new byte[] { 49 } },
+        { SwipeDirection.Down, new byte[] { 50 } },
+        { SwipeDirection.Left, new byte[] { 51 } },
+        { SwipeDirection.Right, new byte[] { 52 } },
     };
 
     private void Awake()
@@ -42,14 +33,14 @@ public class FirestoreSender : MonoBehaviour
 
     private void SendDirection(SwipeDirection direction)
     {
-        SendUnityWebRequest(string.Format(_json, values[direction])).Forget();
+        SendUnityWebRequest(values[direction]).Forget();
     }
 
-    private async UniTaskVoid SendUnityWebRequest(string json)
+    private async UniTaskVoid SendUnityWebRequest(byte[] bytes)
     {
-        UnityWebRequest webRequest = new(baseUrl, _patch)
+        UnityWebRequest webRequest = new(baseUrl, _put)
         {
-            uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json))
+            uploadHandler = new UploadHandlerRaw(bytes)
         };
 
         await webRequest.SendWebRequest();

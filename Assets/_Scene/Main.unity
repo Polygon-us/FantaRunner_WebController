@@ -729,7 +729,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b548656ac7c5bc2429b379f8dc8e1177, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseUrl: https://firestore.googleapis.com/v1/projects/polygonus-fantarunner/databases/(default)/documents/Session/A1B1
+  baseUrl: https://polygonus-fantarunner-default-rtdb.firebaseio.com/A1B1.json
 --- !u!4 &532680875
 Transform:
   m_ObjectHideFlags: 0
