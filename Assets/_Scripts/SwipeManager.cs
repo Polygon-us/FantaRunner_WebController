@@ -30,6 +30,8 @@ public class SwipeManager : MonoBehaviour
     {
         inputActions = new TouchControls();
         inputActions.Enable();
+
+        ResetShadows();
     }
 
     private void OnEnable()
@@ -59,8 +61,8 @@ public class SwipeManager : MonoBehaviour
         }
 
         direction = GetSwipeDirection(swipeDirection);
-        FirestoreSender.directionToSend?.Invoke(direction);
 
+        FirestoreSender.directionToSend?.Invoke(direction);
         UpdateShadows(direction);
     }
 

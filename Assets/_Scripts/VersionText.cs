@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class VersionText : MonoBehaviour
 {
-
     [SerializeField] private TextMeshProUGUI text;
 
     private void Awake()

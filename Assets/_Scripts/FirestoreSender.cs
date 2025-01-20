@@ -8,7 +8,9 @@ public class FirestoreSender : MonoBehaviour
 {
     public static Action<SwipeDirection> directionToSend;
 
-    [SerializeField, TextArea] private string baseUrl;
+    private int counter = 0;
+
+    private readonly StringBuilder _jsonBuilder = new(64);
     private readonly Dictionary<SwipeDirection, int> values = new()
     {
         { SwipeDirection.None, 0 },
@@ -17,12 +19,10 @@ public class FirestoreSender : MonoBehaviour
         { SwipeDirection.Left, 3 },
         { SwipeDirection.Right, 4 },
     };
-
     private const string _document = "A1B1";
-
-    private int counter = 0;
-
-    private readonly StringBuilder _jsonBuilder = new(64);
+    private const string _jsonPart1 = "{\"direction\": ";
+    private const string _jsonPart2 = ", \"count\": ";
+    private const string _jsonPart3 = "}";
 
     private void Awake()
     {
@@ -38,14 +38,15 @@ public class FirestoreSender : MonoBehaviour
     {
         FirebaseDatabase.UpdateJSON(_document, GetJson(values[direction], counter++));
     }
+
     private string GetJson(int direction, int count)
     {
         _jsonBuilder.Clear();
-        _jsonBuilder.Append("{\"direction\": ");
+        _jsonBuilder.Append(_jsonPart1);
         _jsonBuilder.Append(direction);
-        _jsonBuilder.Append(", \"count\": ");
+        _jsonBuilder.Append(_jsonPart2);
         _jsonBuilder.Append(count);
-        _jsonBuilder.Append("}");
+        _jsonBuilder.Append(_jsonPart3);
         return _jsonBuilder.ToString();
     }
 }
