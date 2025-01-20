@@ -31,7 +31,7 @@
         streamingAssetsUrl: "StreamingAssets",
         companyName: "PolygonUs",
         productName: "FantaRunner_WebController",
-        productVersion: "0.1.0",
+        productVersion: "0.1.03",
       };
 
       const container = document.querySelector("#unity-container");
@@ -40,24 +40,12 @@
       const progressBarEmpty = document.querySelector("#unity-progress-bar-empty");
       const progressBarFull = document.querySelector("#unity-progress-bar-full");
       const spinner = document.querySelector('.spinner');
-      var isMobile = 0;
-      var _unityInstance = null;
 
       if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
         container.className = "unity-mobile";
         config.devicePixelRatio = 1;
-        isMobile = 1;
       }
       loadingCover.style.display = "";
-
-      function CheckDevice()
-      {
-        if (typeof _unityInstance !== 'undefined' && _unityInstance !== null) {
-            _unityInstance.SendMessage('--Manager--', 'OnDeviceCheck', isMobile);
-        } else {
-            console.error("unityInstance is not defined or null");
-        }
-      }
 
       const script = document.createElement("script");
       script.src = loaderUrl;
@@ -71,13 +59,29 @@
           progressBarEmpty.style.display = "";
           progressBarFull.style.width = `${100 * progress}%`;
         }).then((unityInstance) => {
-          _unityInstance = unityInstance;
+          window.unityInstance = unityInstance;
           loadingCover.style.display = "none";
         }).catch((message) => {
           alert(message);
         });
       };
       document.body.appendChild(script);
+
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/9.14.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.14.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.2.0/firebase-database-compat.js"></script>
+    <script>
+      const firebaseApp = firebase.initializeApp({
+        apiKey: "AIzaSyBBs0Fyx51ef1xmFhn_9ifMzo7zr_J4Zuo",
+        authDomain: "polygonus-fantarunner.firebaseapp.com",
+        databaseURL: "https://polygonus-fantarunner-default-rtdb.firebaseio.com",
+        projectId: "polygonus-fantarunner",
+        storageBucket: "polygonus-fantarunner.firebasestorage.app",
+        messagingSenderId: "181429508314",
+        appId: "1:181429508314:web:1c9d7fb549f39fedcfade3"
+      });
+      const db = firebaseApp.firestore();
     </script>
   </body>
 </html>
