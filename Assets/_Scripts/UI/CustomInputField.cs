@@ -20,7 +20,6 @@ public class CustomInputField : MonoBehaviour
         inputField ??= GetComponentInChildren<TMP_InputField>();
     }
 
-#if UNITY_EDITOR
     private void OnValidate()
     {
         EnsureInitialized();
@@ -29,7 +28,6 @@ public class CustomInputField : MonoBehaviour
         ((TMP_Text)inputField.placeholder).text = placeHolderText;
         inputField.contentType = contentType;
     }
-#endif
 
     private void Awake()
     {
@@ -40,6 +38,7 @@ public class CustomInputField : MonoBehaviour
 
     private void ShowKeyboard(string text)
     {
+        print("Show Keyboard");
         TouchScreenKeyboard.Open(text, keyboardType, false, false);
     }
 
