@@ -19,7 +19,8 @@ public class CustomInputField : MonoBehaviour
         label ??= GetComponentInChildren<TMP_Text>();
         inputField ??= GetComponentInChildren<TMP_InputField>();
     }
-    
+
+#if UNITY_EDITOR
     private void OnValidate()
     {
         EnsureInitialized();
@@ -28,9 +29,12 @@ public class CustomInputField : MonoBehaviour
         ((TMP_Text)inputField.placeholder).text = placeHolderText;
         inputField.contentType = contentType;
     }
+#endif
 
     private void Awake()
     {
+        EnsureInitialized();
+        
         inputField.onSelect.AddListener(ShowKeyboard);
     }
 
