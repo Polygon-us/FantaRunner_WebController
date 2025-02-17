@@ -62,7 +62,7 @@ public class SwipeManager : MonoBehaviour
 
         direction = GetSwipeDirection(swipeDirection);
 
-        FirestoreSender.directionToSend?.Invoke(direction);
+        FirestoreSender.DirectionToSend?.Invoke(direction);
         UpdateShadows(direction);
     }
 
