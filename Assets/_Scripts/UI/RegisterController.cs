@@ -1,8 +1,8 @@
-using Source.Utils.Validations;
-using Source.Utils.Responses;
-using Source.DTOs.Request;
+using Utils.Validations;
+using Utils.Responses;
 using UnityEngine.UI;
 using UI.InputField;
+using DTOs.Firebase;
 using UnityEngine;
 using System;
 

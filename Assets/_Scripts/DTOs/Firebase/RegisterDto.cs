@@ -1,6 +1,6 @@
-﻿namespace Source.DTOs.Request
+﻿namespace DTOs.Firebase
 {
-    public class RegisterDto
+    public struct RegisterDto
     {
         public string name;
         public string username;
