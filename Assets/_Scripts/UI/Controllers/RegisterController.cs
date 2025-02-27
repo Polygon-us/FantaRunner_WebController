@@ -6,7 +6,7 @@ using DTOs.Firebase;
 using UnityEngine;
 using System;
 
-namespace UI
+namespace UI.Controllers
 {
     public class RegisterController : MonoBehaviour
     {

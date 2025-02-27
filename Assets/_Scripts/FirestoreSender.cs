@@ -4,13 +4,11 @@ using DTOs.Firebase;
 using UnityEngine;
 using System;
 
-public class FirestoreSender : MonoBehaviour
+public static class FirestoreSender
 {
-    public static Action<SwipeDirection> DirectionToSend;
+    private static int _counter;
 
-    private int counter = 0;
-
-    private readonly Dictionary<SwipeDirection, int> values = new()
+    private static readonly Dictionary<SwipeDirection, int> Values = new()
     {
         { SwipeDirection.None, 0 },
         { SwipeDirection.Up, 1 },
@@ -21,28 +19,25 @@ public class FirestoreSender : MonoBehaviour
     
     private const string Document = "A1B1";
     
-    private DirectionDto directionData;
+    private static DirectionDto _directionData;
 
-    private void OnEnable()
+    [RuntimeInitializeOnLoadMethod]
+    private static void InitializeOnLoad()
     {
-        DirectionToSend += SendDirection;
-    }
-
-    private void OnDisable()
-    {
-        DirectionToSend -= SendDirection;
+        _counter = 0;    
+        _directionData = new DirectionDto();
     }
  
-    private void SendDirection(SwipeDirection direction)
+    public static void SendDirection(SwipeDirection direction)
     {
-        FirebaseDatabase.UpdateJSON(Document, GetJson(values[direction], counter++));
+        FirebaseDatabase.UpdateJSON(Document, GetDirectionJson(Values[direction], _counter++));
     }
 
-    private string GetJson(int direction, int count)
+    private static string GetDirectionJson(int direction, int count)
     {
-        directionData.direction = direction;
-        directionData.count = count;
+        _directionData.direction = direction;
+        _directionData.count = count;
         
-        return JsonUtility.ToJson(directionData);
+        return JsonUtility.ToJson(_directionData);
     }
 }
