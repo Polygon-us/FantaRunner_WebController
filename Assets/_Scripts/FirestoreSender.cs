@@ -1,5 +1,6 @@
 using FirebaseWebGL.Scripts.FirebaseBridge;
 using System.Collections.Generic;
+using DTOs.Firebase;
 using UnityEngine;
 using System;
 
@@ -18,36 +19,30 @@ public class FirestoreSender : MonoBehaviour
         { SwipeDirection.Right, 4 }
     };
     
-    private const string _document = "A1B1";
+    private const string Document = "A1B1";
     
-    private DirectionData _directionData;
+    private DirectionDto directionData;
 
-    private void Awake()
+    private void OnEnable()
     {
         DirectionToSend += SendDirection;
     }
 
-    private void OnDestroy()
+    private void OnDisable()
     {
         DirectionToSend -= SendDirection;
     }
  
     private void SendDirection(SwipeDirection direction)
     {
-        FirebaseDatabase.UpdateJSON(_document, GetJson(values[direction], counter++));
+        FirebaseDatabase.UpdateJSON(Document, GetJson(values[direction], counter++));
     }
 
     private string GetJson(int direction, int count)
     {
-        _directionData.direction = direction;
-        _directionData.count = count;
+        directionData.direction = direction;
+        directionData.count = count;
         
-        return JsonUtility.ToJson(_directionData);
+        return JsonUtility.ToJson(directionData);
     }
-}
-
-public struct DirectionData
-{
-    public int direction;
-    public int count;
 }

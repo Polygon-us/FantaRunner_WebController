@@ -1,17 +1,12 @@
-using Source.Utils.Responses;
-using Source.DTOs.Request;
+using Utils.Responses;
+using DTOs.Firebase;
 
-namespace Source.Utils.Validations
+namespace Utils.Validations
 {
     public static class RegisterValidation
     {
         public static ResultResponse<RegisterDto> Validate(RegisterDto registerDto)
         {
-            if (registerDto == null)
-            {
-                return ResultResponse<RegisterDto>.Failure("DTO cannot be null.", "DTO_NULL");
-            }
-
             if (!InputValidator.IsValidEmail(registerDto.email))
             {
                 return ResultResponse<RegisterDto>.Failure(

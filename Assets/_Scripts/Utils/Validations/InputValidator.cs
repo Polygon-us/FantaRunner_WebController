@@ -1,6 +1,6 @@
 using System.Text.RegularExpressions;
 
-namespace Source.Utils.Validations
+namespace Utils.Validations
 {
     public static class InputValidator
     {

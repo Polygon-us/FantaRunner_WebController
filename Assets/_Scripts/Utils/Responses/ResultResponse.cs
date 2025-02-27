@@ -1,6 +1,6 @@
 using System;
 
-namespace Source.Utils.Responses
+namespace Utils.Responses
 {
     public class ResultResponse<T>
     {
