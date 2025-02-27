@@ -4,38 +4,46 @@ using Source.DTOs.Request;
 using UnityEngine.UI;
 using UI.InputField;
 using UnityEngine;
+using System;
 
-public class RegisterController : MonoBehaviour
+namespace UI
 {
-   [SerializeField] private CustomInputField nameInputField;
-   [SerializeField] private CustomInputField usernameInputField;
-   [SerializeField] private CustomInputField emailInputField;
-   [SerializeField] private CustomInputField phoneInputField;
-   [SerializeField] private Button sendButton;
+    public class RegisterController : MonoBehaviour
+    {
+        [SerializeField] private CustomInputField nameInputField;
+        [SerializeField] private CustomInputField usernameInputField;
+        [SerializeField] private CustomInputField emailInputField;
+        [SerializeField] private CustomInputField phoneInputField;
+        [SerializeField] private Button sendButton;
 
-   private void Awake()
-   {
-      sendButton.onClick.AddListener(SendRegister);
-   }
+        public Action OnRegistered;
 
-   private void SendRegister()
-   {
-      RegisterDto registerDto = new RegisterDto
-      {
-         name = nameInputField.Text,
-         username = usernameInputField.Text,
-         email = emailInputField.Text,
-         phone = phoneInputField.Text
-      };
+        private void Awake()
+        {
+            sendButton.onClick.AddListener(SendRegister);
+        }
 
-      ResultResponse<RegisterDto> validation = RegisterValidation.Validate(registerDto);
+        private void SendRegister()
+        {
+            RegisterDto registerDto = new RegisterDto
+            {
+                name = nameInputField.Text,
+                username = usernameInputField.Text,
+                email = emailInputField.Text,
+                phone = phoneInputField.Text
+            };
 
-      if (!validation.IsSuccess)
-      {
-         Debug.Log(validation.ErrorMessage);
-         return;
-      }
-      
-      // TODO: Send to backend
-   }
+            ResultResponse<RegisterDto> validation = RegisterValidation.Validate(registerDto);
+
+            if (!validation.IsSuccess)
+            {
+                Debug.Log(validation.ErrorMessage);
+                return;
+            }
+
+            // TODO: Send to backend
+
+            OnRegistered?.Invoke();
+        }
+    }
 }
