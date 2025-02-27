@@ -2,6 +2,7 @@ using Source.Utils.Validations;
 using Source.Utils.Responses;
 using Source.DTOs.Request;
 using UnityEngine.UI;
+using UI.InputField;
 using UnityEngine;
 
 public class RegisterController : MonoBehaviour
