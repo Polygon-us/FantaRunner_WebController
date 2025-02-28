@@ -63,7 +63,7 @@ namespace UI.Controllers
 
             direction = GetSwipeDirection(swipeDirection);
 
-            FirestoreSender.SendDirection(direction);
+            FirestoreSender.Instance.SendDirection(direction);
             UpdateShadows(direction);
         }
 

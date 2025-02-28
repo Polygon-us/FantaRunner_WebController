@@ -20,7 +20,7 @@ namespace UI.InputField
         private TMP_Text[] texts;
         private Image iconImage;
 
-        public string Text => inputField.text;
+        public string Text { get => inputField.text; set => inputField.text = value; }
 
         [ContextMenu(nameof(ResetReferences))]
         private void ResetReferences()

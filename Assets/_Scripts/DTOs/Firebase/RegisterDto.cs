@@ -1,5 +1,8 @@
-﻿namespace DTOs.Firebase
+﻿using System;
+
+namespace DTOs.Firebase
 {
+    [Serializable]
     public struct RegisterDto
     {
         public string name;
