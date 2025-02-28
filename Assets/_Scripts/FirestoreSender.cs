@@ -16,7 +16,7 @@ public class FirestoreSender : MonoBehaviour
         {SwipeDirection.Right, 4}
     };
 
-    private const string Document = "A1B1";
+    private const string Room = "A1B1";
 
     private DirectionDto directionData;
 
@@ -44,7 +44,7 @@ public class FirestoreSender : MonoBehaviour
     {
         FirebaseDatabase.PostJSON
         (
-            null,
+            $"{Room}/user",
             JsonUtility.ToJson(registerDto),
             gameObject.name,
             nameof(OnRequestSuccess),
@@ -54,7 +54,14 @@ public class FirestoreSender : MonoBehaviour
 
     public void SendDirection(SwipeDirection direction)
     {
-        FirebaseDatabase.UpdateJSON(Document, GetDirectionJson(values[direction], counter++));
+        FirebaseDatabase.UpdateJSON
+        (
+            $"{Room}/direction",
+            GetDirectionJson(values[direction], counter++),
+            gameObject.name,
+            nameof(OnRequestSuccess),
+            nameof(OnRequestFail)
+        );
     }
 
     private string GetDirectionJson(int direction, int count)
