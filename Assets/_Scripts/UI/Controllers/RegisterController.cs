@@ -6,7 +6,7 @@ using DTOs.Firebase;
 using UnityEngine;
 using System;
 
-namespace UI
+namespace UI.Controllers
 {
     public class RegisterController : MonoBehaviour
     {
@@ -15,12 +15,24 @@ namespace UI
         [SerializeField] private CustomInputField emailInputField;
         [SerializeField] private CustomInputField phoneInputField;
         [SerializeField] private Button sendButton;
-
+        [SerializeField] private MockRegisterData mockRegisterData;
+        
         public Action OnRegistered;
 
         private void Awake()
         {
             sendButton.onClick.AddListener(SendRegister);
+        }
+
+        private void Start()
+        {
+            if (!mockRegisterData)
+                return;
+            
+            nameInputField.Text = mockRegisterData.RegisterMockData.name;
+            usernameInputField.Text = mockRegisterData.RegisterMockData.username;
+            emailInputField.Text = mockRegisterData.RegisterMockData.email;
+            phoneInputField.Text = mockRegisterData.RegisterMockData.phone;
         }
 
         private void SendRegister()
@@ -41,9 +53,9 @@ namespace UI
                 return;
             }
 
-            // TODO: Send to backend
-
-            OnRegistered?.Invoke();
+            FirestoreSender.Instance.SendUser(registerDto);
+            
+            // OnRegistered?.Invoke();
         }
     }
 }

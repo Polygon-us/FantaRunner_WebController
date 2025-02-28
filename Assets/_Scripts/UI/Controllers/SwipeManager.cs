@@ -11,7 +11,7 @@ public enum SwipeDirection
     Right
 }
 
-namespace UI
+namespace UI.Controllers
 {
     public class SwipeManager : MonoBehaviour
     {
@@ -63,7 +63,7 @@ namespace UI
 
             direction = GetSwipeDirection(swipeDirection);
 
-            FirestoreSender.DirectionToSend?.Invoke(direction);
+            FirestoreSender.Instance.SendDirection(direction);
             UpdateShadows(direction);
         }
 

@@ -2,47 +2,83 @@ using FirebaseWebGL.Scripts.FirebaseBridge;
 using System.Collections.Generic;
 using DTOs.Firebase;
 using UnityEngine;
-using System;
 
 public class FirestoreSender : MonoBehaviour
 {
-    public static Action<SwipeDirection> DirectionToSend;
-
-    private int counter = 0;
+    private int counter;
 
     private readonly Dictionary<SwipeDirection, int> values = new()
     {
-        { SwipeDirection.None, 0 },
-        { SwipeDirection.Up, 1 },
-        { SwipeDirection.Down, 2 },
-        { SwipeDirection.Left, 3 },
-        { SwipeDirection.Right, 4 }
+        {SwipeDirection.None, 0},
+        {SwipeDirection.Up, 1},
+        {SwipeDirection.Down, 2},
+        {SwipeDirection.Left, 3},
+        {SwipeDirection.Right, 4}
     };
-    
-    private const string Document = "A1B1";
-    
+
+    private const string Room = "A1B1";
+
     private DirectionDto directionData;
 
-    private void OnEnable()
+    private static FirestoreSender _instance;
+
+    public static FirestoreSender Instance
     {
-        DirectionToSend += SendDirection;
+        get
+        {
+            if (_instance)
+                return _instance;
+
+            _instance = FindAnyObjectByType<FirestoreSender>();
+
+            if (!_instance)
+                _instance = new GameObject("FirestoreSender").AddComponent<FirestoreSender>();
+
+            DontDestroyOnLoad(_instance);
+            
+            return _instance;
+        }
     }
 
-    private void OnDisable()
+    public void SendUser(RegisterDto registerDto)
     {
-        DirectionToSend -= SendDirection;
-    }
- 
-    private void SendDirection(SwipeDirection direction)
-    {
-        FirebaseDatabase.UpdateJSON(Document, GetJson(values[direction], counter++));
+        FirebaseDatabase.PostJSON
+        (
+            $"{Room}/user",
+            JsonUtility.ToJson(registerDto),
+            gameObject.name,
+            nameof(OnRequestSuccess),
+            nameof(OnRequestFail)
+        );
     }
 
-    private string GetJson(int direction, int count)
+    public void SendDirection(SwipeDirection direction)
+    {
+        FirebaseDatabase.UpdateJSON
+        (
+            $"{Room}/direction",
+            GetDirectionJson(values[direction], counter++),
+            gameObject.name,
+            nameof(OnRequestSuccess),
+            nameof(OnRequestFail)
+        );
+    }
+
+    private string GetDirectionJson(int direction, int count)
     {
         directionData.direction = direction;
         directionData.count = count;
-        
+
         return JsonUtility.ToJson(directionData);
+    }
+
+    private void OnRequestSuccess(string message)
+    {
+        Debug.Log(message);
+    }
+
+    private void OnRequestFail(string message)
+    {
+        Debug.LogError(message);
     }
 }
