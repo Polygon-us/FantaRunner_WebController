@@ -2,8 +2,8 @@ Shader "Unlit/Logo_UnlitShader"
 {
     Properties
     {
-        _MainTex ("Texture", 2D) = "white" {}
         _UVSpeed ("UV Speed", Vector) = (0, 0, 0, 0)
+        _Alpha ("Alpha", Range(0, 1)) = 1
     }
     SubShader
     {
@@ -37,17 +37,24 @@ Shader "Unlit/Logo_UnlitShader"
             fixed4 _Color;
             sampler2D _MainTex;
             half4 _UVSpeed;
-
+            fixed4 _Spacing;
+            fixed4 _Offset;
+            float _Alpha;
+            
             v2f vert (appdata_t v)
             {
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
 
                 float2 timeOffset = _Time.y * _UVSpeed.xy;
-                o.uv = v.uv + timeOffset;
+
+                // displacement
+                o.uv = v.uv;
+                
+                o.uv += timeOffset;
 
                 o.color = v.color;
-
+                
                 return o;
             }
 
@@ -55,6 +62,7 @@ Shader "Unlit/Logo_UnlitShader"
             {
                 fixed4 texColor = tex2D(_MainTex, i.uv);
                 texColor.rgb = i.color;
+                texColor.a *= _Alpha;
 
                 return texColor;
             }
