@@ -1,5 +1,6 @@
 using ThisOtherThing.UI.Shapes;
 using UnityEngine.InputSystem;
+using FirebaseCore;
 using UnityEngine;
 
 public enum SwipeDirection

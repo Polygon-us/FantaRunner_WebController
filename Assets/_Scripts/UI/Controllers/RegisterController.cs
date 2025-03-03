@@ -3,6 +3,7 @@ using Utils.Responses;
 using UnityEngine.UI;
 using UI.InputField;
 using DTOs.Firebase;
+using FirebaseCore;
 using UnityEngine;
 using System;
 
