@@ -1,15 +1,23 @@
-using FirebaseWebGL.Scripts.FirebaseBridge;
 using DTOs.Firebase;
 using UnityEngine;
+
+#if UNITY_WEBGL && !UNITY_EDITOR
+using FirebaseWebGL.Scripts.FirebaseBridge;
+#else
+using Firebase.Database;
+#endif
 
 namespace FirebaseCore.Senders
 {
     public class UserSender : FirestoreSender<RegisterDto>
     {
+        private const string UserChild = "User";
+
         public UserSender(string room) : base(room)
         {
         }
 
+#if UNITY_WEBGL && !UNITY_EDITOR  
         public override void Send(RegisterDto registerDto)
         {
             FirebaseDatabase.PostJSON
@@ -21,5 +29,11 @@ namespace FirebaseCore.Senders
                 FirebaseReceiver.Instance.FailCallback
             );
         }
+#else
+        public override void Send(RegisterDto registerDto)
+        {
+            Reference.Child(UserChild).SetRawJsonValueAsync(JsonUtility.ToJson(registerDto));
+        }
+#endif
     }
 }
