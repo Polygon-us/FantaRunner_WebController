@@ -1,9 +1,9 @@
+using FirebaseCore.Senders;
 using Utils.Validations;
 using Utils.Responses;
 using UnityEngine.UI;
 using UI.InputField;
 using DTOs.Firebase;
-using FirebaseCore;
 using UnityEngine;
 using System;
 
@@ -17,12 +17,16 @@ namespace UI.Controllers
         [SerializeField] private CustomInputField phoneInputField;
         [SerializeField] private Button sendButton;
         [SerializeField] private MockRegisterData mockRegisterData;
+        [SerializeField] private RoomConfig roomConfig;
         
         public Action OnRegistered;
 
+        private UserSender userSender;
+        
         private void Awake()
         {
             sendButton.onClick.AddListener(SendRegister);
+            userSender = new UserSender(roomConfig.roomName);
         }
 
         private void Start()
@@ -54,7 +58,7 @@ namespace UI.Controllers
                 return;
             }
 
-            FirestoreSender.Instance.SendUser(registerDto);
+            userSender.Send(registerDto);
             
             // OnRegistered?.Invoke();
         }

@@ -11,14 +11,13 @@ using Firebase.Database;
 using Firebase;
 #endif
 
-namespace FirebaseCore
+namespace FirebaseCore.Listeners
 {
     public class FirebaseConnection : MonoBehaviour
     {
         private const string Room = "A1B1";
 
         public static Action<int> OnMovementInput;
-        public static Action OnSubmitInput;
 
 #if UNITY_WEBGL && !UNITY_EDITOR
         private void Start()
@@ -58,12 +57,8 @@ namespace FirebaseCore
                 nameof(HandleError));
         }
 
-        private static T ConvertTo<T>(string obj) where T : class
-        {
-            return JsonConvert.DeserializeObject<T>(obj);
-        }
 #else
-        DatabaseReference reference;
+        private DatabaseReference reference;
 
         private void Start()
         {
@@ -115,5 +110,11 @@ namespace FirebaseCore
             reference.ChildAdded -= HandleChildAdded;
         }
 #endif
+        
+        private static T ConvertTo<T>(string obj) where T : class
+        {
+            return JsonConvert.DeserializeObject<T>(obj);
+        }
+
     }
 }

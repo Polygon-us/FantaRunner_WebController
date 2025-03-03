@@ -1,6 +1,6 @@
 using ThisOtherThing.UI.Shapes;
 using UnityEngine.InputSystem;
-using FirebaseCore;
+using FirebaseCore.Senders;
 using UnityEngine;
 
 public enum SwipeDirection
@@ -19,8 +19,9 @@ namespace UI.Controllers
         private TouchControls inputActions;
 
         [SerializeField] private float minSwipeDistance = 10f;
-
-        [Space] [SerializeField] private Polygon upPolygon;
+        [SerializeField] private RoomConfig roomConfig;
+        [Space]
+        [SerializeField] private Polygon upPolygon;
         [SerializeField] private Polygon downPolygon;
         [SerializeField] private Polygon leftPolygon;
         [SerializeField] private Polygon rightPolygon;
@@ -28,10 +29,14 @@ namespace UI.Controllers
         private Vector2 swipeDirection = Vector2.zero;
         private SwipeDirection direction;
 
+        private DirectionSender directionSender;
+        
         private void Awake()
         {
             inputActions = new TouchControls();
             inputActions.Enable();
+            
+            directionSender = new DirectionSender(roomConfig.roomName);
 
             ResetShadows();
         }
@@ -64,7 +69,7 @@ namespace UI.Controllers
 
             direction = GetSwipeDirection(swipeDirection);
 
-            FirestoreSender.Instance.SendDirection(direction);
+            directionSender.Send(direction);
             UpdateShadows(direction);
         }
 

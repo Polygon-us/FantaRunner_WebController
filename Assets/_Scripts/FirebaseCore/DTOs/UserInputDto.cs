@@ -5,10 +5,4 @@ namespace FirebaseCore.DTOs
         public int count;
         public int direction;
     }
-
-    public struct ChangedDataDto
-    {
-        public string key;
-        public string value;
-    }
 }
