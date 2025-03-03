@@ -14,7 +14,7 @@ using Firebase;
 
 namespace FirebaseCore.Senders
 {
-    public abstract class FirestoreSender<T>
+    public abstract class FirebaseSender<T>
     {
         protected readonly string Room;
         
@@ -27,7 +27,7 @@ namespace FirebaseCore.Senders
 #else
         protected DatabaseReference Reference;
         
-        protected FirestoreSender(string room)
+        protected FirebaseSender(string room)
         {
             Room = room;
             

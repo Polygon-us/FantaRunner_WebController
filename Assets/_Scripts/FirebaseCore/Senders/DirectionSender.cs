@@ -14,11 +14,11 @@ using Firebase;
 
 namespace FirebaseCore.Senders
 {
-    public class DirectionSender : FirestoreSender<SwipeDirection>
+    public class DirectionSender : FirebaseSender<SwipeDirection>
     {
         private int counter;
 
-        private const string DirectionChild = "Direction";
+        private const string DirectionChild = "movement";
 
         private readonly Dictionary<SwipeDirection, int> values = new()
         {

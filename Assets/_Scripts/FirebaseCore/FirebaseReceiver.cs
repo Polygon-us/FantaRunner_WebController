@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace FirebaseCore
@@ -27,6 +28,12 @@ namespace FirebaseCore
         public string SuccessCallback => nameof(OnRequestSuccess);
         public string FailCallback => nameof(OnRequestFail);
         
+        public string ChildChangedCallback => nameof(OnChildChanged);
+        public string ChildAddedCallback => nameof(OnChildAdded);
+        
+        public Action<string> ChildChanged;
+        public Action<string> ChildAdded;
+        
         private void OnRequestSuccess(string message)
         {
             Debug.Log(message);
@@ -36,5 +43,8 @@ namespace FirebaseCore
         {
             Debug.LogError(message);
         }
+
+        private void OnChildChanged(string data) => ChildChanged?.Invoke(data);
+        private void OnChildAdded(string data) => ChildAdded?.Invoke(data);
     }
 }

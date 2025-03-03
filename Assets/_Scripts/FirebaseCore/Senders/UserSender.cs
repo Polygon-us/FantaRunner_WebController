@@ -9,7 +9,7 @@ using Firebase.Database;
 
 namespace FirebaseCore.Senders
 {
-    public class UserSender : FirestoreSender<RegisterDto>
+    public class UserSender : FirebaseSender<RegisterDto>
     {
         private const string UserChild = "User";
 
