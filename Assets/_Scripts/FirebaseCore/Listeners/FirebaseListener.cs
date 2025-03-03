@@ -39,9 +39,6 @@ namespace FirebaseCore.Listeners
                 case nameof(UserInputDto.direction):
                     OnMovementInput?.Invoke(int.Parse(dataDto.value));
                     break;
-                case nameof(UserInputDto.submit):
-                    OnSubmitInput?.Invoke();
-                    break;
             }
 
         }
@@ -111,7 +108,7 @@ namespace FirebaseCore.Listeners
         }
 #endif
         
-        private static T ConvertTo<T>(string obj) where T : class
+        private static T ConvertTo<T>(string obj)
         {
             return JsonConvert.DeserializeObject<T>(obj);
         }

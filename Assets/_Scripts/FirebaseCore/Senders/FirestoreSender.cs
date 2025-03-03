@@ -42,8 +42,8 @@ namespace FirebaseCore.Senders
                     Debug.LogError("Could not resolve Firebase dependencies: " + task.Exception);
                 }
             });
-#endif
         }
+#endif
         
         public abstract void Send(T obj);
     }
