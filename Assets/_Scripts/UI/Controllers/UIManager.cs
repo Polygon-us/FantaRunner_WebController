@@ -6,6 +6,7 @@ namespace UI.Controllers
     {
         [SerializeField] private RegisterController registerPanel;
         [SerializeField] private SwipeManager swipePanel;
+        // [SerializeField] private GameOverController gameOverPanel;
 
         private GameObject currentMenu;
 
@@ -23,6 +24,7 @@ namespace UI.Controllers
         {
             registerPanel.gameObject.SetActive(false);
             swipePanel.gameObject.SetActive(false);
+            // gameOverPanel.gameObject.SetActive(false);
 
             ShowRegister();
         }
@@ -39,9 +41,14 @@ namespace UI.Controllers
             ShowPanel(registerPanel.gameObject);
         }
 
-        private void ShowDirection()
+        public void ShowDirection()
         {
             ShowPanel(swipePanel.gameObject);
+        }
+
+        public void ShowGameOver()
+        {
+            // ShowPanel(gameOverPanel.gameObject);
         }
     }
 }
