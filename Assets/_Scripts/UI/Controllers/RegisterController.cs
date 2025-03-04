@@ -10,7 +10,7 @@ using System;
 
 namespace UI.Controllers
 {
-    public class RegisterController : MonoBehaviour
+    public class RegisterController : ControllerBase
     {
         [SerializeField] private CustomInputField nameInputField;
         [SerializeField] private CustomInputField usernameInputField;
@@ -25,20 +25,22 @@ namespace UI.Controllers
         private UserSender userSender;
         private UserListener userListener;
 
-        private void Awake()
+        public override void OnCreation(UIController context)
         {
+            base.OnCreation(context);
+            
             sendButton.onClick.AddListener(SendRegister);
         }
         
-        private void Start()
+        public override void OnShow()
         {
-            if (!mockRegisterData)
-                return;
-            
-            nameInputField.Text = mockRegisterData.RegisterMockData.name;
-            usernameInputField.Text = mockRegisterData.RegisterMockData.username;
-            emailInputField.Text = mockRegisterData.RegisterMockData.email;
-            phoneInputField.Text = mockRegisterData.RegisterMockData.phone;
+            if (mockRegisterData)
+            {
+                nameInputField.Text = mockRegisterData.RegisterMockData.name;
+                usernameInputField.Text = mockRegisterData.RegisterMockData.username;
+                emailInputField.Text = mockRegisterData.RegisterMockData.email;
+                phoneInputField.Text = mockRegisterData.RegisterMockData.phone;
+            }
             
             userSender = new UserSender(roomConfig.roomName);
             userListener = new UserListener(roomConfig.roomName);
@@ -67,7 +69,7 @@ namespace UI.Controllers
             // OnRegistered?.Invoke();
         }
 
-        private void OnDisable()
+        public override void OnHide()
         {
             userListener.Disconnect();
         }

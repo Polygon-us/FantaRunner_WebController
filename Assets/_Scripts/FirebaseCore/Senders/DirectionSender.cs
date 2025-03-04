@@ -43,7 +43,7 @@ namespace FirebaseCore.Senders
         {
             FirebaseDatabase.UpdateJSON
             (
-                $"{Room}/direction",
+                $"{Room}/{DirectionChild}",
                 GetDirectionJson(values[direction], counter++),
                 FirebaseReceiver.Instance.Name,
                 FirebaseReceiver.Instance.SuccessCallback,
