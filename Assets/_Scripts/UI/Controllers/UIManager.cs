@@ -20,7 +20,7 @@ namespace UI.Controllers
             registerPanel.OnRegistered -= ShowDirection;
         }
 
-        private void Start()
+        private void Awake()
         {
             registerPanel.gameObject.SetActive(false);
             swipePanel.gameObject.SetActive(false);

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using FirebaseCore.DTOs;
 using Newtonsoft.Json;
 using UnityEngine;
@@ -13,9 +14,11 @@ using Firebase;
 
 namespace FirebaseCore.Listeners
 {
-    public abstract class FirebaseListener
+    public abstract class FirebaseListener<TDto> where TDto : struct 
     {
         protected readonly string Room;
+
+        public Action<TDto> OnDataReceived;
         
 #if UNITY_WEBGL && !UNITY_EDITOR
         protected FirebaseListener(string room)
@@ -82,8 +85,13 @@ namespace FirebaseCore.Listeners
             Reference.ChildChanged -= HandleChildChanged;
         }
 #endif
+
+        protected static T ConvertTo<T>(Dictionary<string, object> data)
+        {
+            return ConvertTo<T>(JsonConvert.SerializeObject(data));
+        }
         
-        private static T ConvertTo<T>(string obj)
+        protected static T ConvertTo<T>(string obj)
         {
             return JsonConvert.DeserializeObject<T>(obj);
         }

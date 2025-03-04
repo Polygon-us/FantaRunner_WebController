@@ -24,15 +24,12 @@ namespace UI.Controllers
 
         private UserSender userSender;
         private UserListener userListener;
-        
+
         private void Awake()
         {
             sendButton.onClick.AddListener(SendRegister);
-            
-            userSender = new UserSender(roomConfig.roomName);
-            userListener = new UserListener(roomConfig.roomName);
         }
-
+        
         private void Start()
         {
             if (!mockRegisterData)
@@ -42,6 +39,9 @@ namespace UI.Controllers
             usernameInputField.Text = mockRegisterData.RegisterMockData.username;
             emailInputField.Text = mockRegisterData.RegisterMockData.email;
             phoneInputField.Text = mockRegisterData.RegisterMockData.phone;
+            
+            userSender = new UserSender(roomConfig.roomName);
+            userListener = new UserListener(roomConfig.roomName);
         }
 
         private void SendRegister()
