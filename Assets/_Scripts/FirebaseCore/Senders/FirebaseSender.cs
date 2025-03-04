@@ -20,7 +20,7 @@ namespace FirebaseCore.Senders
         
 #if UNITY_WEBGL && !UNITY_EDITOR        
 
-        protected FirestoreSender(string room)
+        protected FirebaseSender(string room)
         {
             Room = room;
         }

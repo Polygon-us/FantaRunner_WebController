@@ -1,11 +1,9 @@
-﻿using System.Threading.Tasks;
-
-#if UNITY_WEBGL && !UNITY_EDITOR 
+﻿#if UNITY_WEBGL && !UNITY_EDITOR 
 
 #else
 using Firebase.Database;
-using UnityEngine;
 #endif
+using UnityEngine;
 
 namespace FirebaseCore.Listeners
 {
