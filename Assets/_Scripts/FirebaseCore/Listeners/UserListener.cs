@@ -4,6 +4,7 @@
 
 #else
 using Firebase.Database;
+using UnityEngine;
 #endif
 
 namespace FirebaseCore.Listeners
@@ -19,16 +20,20 @@ namespace FirebaseCore.Listeners
 #if UNITY_WEBGL && !UNITY_EDITOR 
         protected override void HandleValueChanged(string data)
         {   
-            
-        
+            Debug.Log(data);
         }
 #else
-        protected override Task Connect()
+        
+        protected override void GetReference()
         {
-            return base.Connect();
-            
             Reference = FirebaseDatabase.DefaultInstance.GetReference(Room);
         }
+
+        protected override void HandleChildChanged(object sender, ChildChangedEventArgs e)
+        {
+            Debug.Log("Child changed/added: " + e.Snapshot.Key);
+        }
+
 #endif
         
         

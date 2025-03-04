@@ -6,7 +6,7 @@ using System;
 #if UNITY_WEBGL && !UNITY_EDITOR
 using FirebaseWebGL.Scripts.FirebaseBridge;
 #else
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using Firebase.Database;
 using Firebase;
 #endif
@@ -36,7 +36,7 @@ namespace FirebaseCore.Listeners
 
         protected abstract void HandleValueChanged(string data);
         
-        public void StopListening()
+        public void Disconnect()
         {
             FirebaseReceiver receiver = FirebaseReceiver.Instance;
             FirebaseDatabase.StopListeningForChildChanged(Room, receiver.Name, receiver.ChildChangedCallback, receiver.FailCallback);
@@ -50,15 +50,37 @@ namespace FirebaseCore.Listeners
         {
             Room = room;
 
-            Connect();
+            Connect().Forget();
         }
 
-        protected virtual async Task Connect()
+        private async UniTaskVoid Connect()
         {
             // Initialize Firebase
             await FirebaseApp.CheckAndFixDependenciesAsync();
+            
+            GetReference();
+            
+            ListenToChanges();
         }
-        
+
+        protected abstract void GetReference();
+
+        private void ListenToChanges()
+        {
+            Reference.ChildAdded += HandleChildChanged;
+            Reference.ChildChanged += HandleChildChanged;
+        }
+
+        protected abstract void HandleChildChanged(object sender, ChildChangedEventArgs e);
+
+        public void Disconnect()
+        {
+            if (Reference == null)
+                return;
+            
+            Reference.ChildAdded -= HandleChildChanged;
+            Reference.ChildChanged -= HandleChildChanged;
+        }
 #endif
         
         private static T ConvertTo<T>(string obj)

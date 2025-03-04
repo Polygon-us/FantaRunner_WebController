@@ -11,7 +11,7 @@ namespace FirebaseCore.Senders
 {
     public class UserSender : FirebaseSender<RegisterDto>
     {
-        private const string UserChild = "User";
+        private const string UserChild = "user";
 
         public UserSender(string room) : base(room)
         {

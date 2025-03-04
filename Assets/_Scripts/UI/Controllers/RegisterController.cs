@@ -1,3 +1,4 @@
+using FirebaseCore.Listeners;
 using FirebaseCore.Senders;
 using Utils.Validations;
 using Utils.Responses;
@@ -22,11 +23,14 @@ namespace UI.Controllers
         public Action OnRegistered;
 
         private UserSender userSender;
+        private UserListener userListener;
         
         private void Awake()
         {
             sendButton.onClick.AddListener(SendRegister);
+            
             userSender = new UserSender(roomConfig.roomName);
+            userListener = new UserListener(roomConfig.roomName);
         }
 
         private void Start()
@@ -61,6 +65,11 @@ namespace UI.Controllers
             userSender.Send(registerDto);
             
             // OnRegistered?.Invoke();
+        }
+
+        private void OnDisable()
+        {
+            userListener.Disconnect();
         }
     }
 }
