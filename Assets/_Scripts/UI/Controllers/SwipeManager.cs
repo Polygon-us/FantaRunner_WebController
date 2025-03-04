@@ -14,10 +14,8 @@ public enum SwipeDirection
 
 namespace UI.Controllers
 {
-    public class SwipeManager : MonoBehaviour
+    public class SwipeManager : ControllerBase
     {
-        private TouchControls inputActions;
-
         [SerializeField] private float minSwipeDistance = 10f;
         [SerializeField] private RoomConfig roomConfig;
         [Space]
@@ -29,13 +27,19 @@ namespace UI.Controllers
         private Vector2 swipeDirection = Vector2.zero;
         private SwipeDirection direction;
 
+        private TouchControls inputActions;
         private DirectionSender directionSender;
-        
-        private void Awake()
+
+        public override void OnCreation(UIController context)
         {
+            base.OnCreation(context);
+            
             inputActions = new TouchControls();
             inputActions.Enable();
-            
+        }
+
+        public override void OnShow()
+        {
             directionSender = new DirectionSender(roomConfig.roomName);
 
             ResetShadows();
@@ -111,6 +115,10 @@ namespace UI.Controllers
             rightPolygon.ShadowProperties.ShowShadows = false;
 
             UiMeshesUpdate();
+        }
+
+        public override void OnHide()
+        {
         }
     }
 }

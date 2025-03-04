@@ -22,7 +22,7 @@ namespace FirebaseCore.Senders
         {
             FirebaseDatabase.PostJSON
             (
-                $"{Room}/user",
+                $"{Room}/{UserChild}",
                 JsonUtility.ToJson(registerDto),
                 FirebaseReceiver.Instance.Name,
                 FirebaseReceiver.Instance.SuccessCallback,

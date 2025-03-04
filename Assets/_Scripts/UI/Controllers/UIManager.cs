@@ -4,52 +4,49 @@ namespace UI.Controllers
 {
     public class UIController : MonoBehaviour
     {
-        [SerializeField] private RegisterController registerPanel;
-        [SerializeField] private SwipeManager swipePanel;
-        [SerializeField] private GameOverController gameOverPanel;
+        [SerializeField] private ControllerBase registerPanel;
+        [SerializeField] private ControllerBase swipePanel;
+        [SerializeField] private ControllerBase gameOverPanel;
 
-        private GameObject currentMenu;
+        private ControllerBase currentMenu;
 
-        private void OnEnable()
-        {
-            registerPanel.OnRegistered += ShowDirection;
-        }
-
-        private void OnDisable()
-        {
-            registerPanel.OnRegistered -= ShowDirection;
-        }
-
+      
         private void Awake()
         {
             registerPanel.gameObject.SetActive(false);
             swipePanel.gameObject.SetActive(false);
             gameOverPanel.gameObject.SetActive(false);
 
+            registerPanel.OnCreation(this);
+            swipePanel.OnCreation(this);
+            gameOverPanel.OnCreation(this);
+            
             // ShowRegister();
-            ShowGameOver();
+            ShowDirection();
         }
 
-        private void ShowPanel(GameObject panel)
+        private void ShowPanel(ControllerBase panel)
         {
-            currentMenu?.SetActive(false);
+            currentMenu?.gameObject.SetActive(false);
+            currentMenu?.OnHide();
             currentMenu = panel;
-            currentMenu.SetActive(true);
+            currentMenu.gameObject.SetActive(true);
+            currentMenu.OnShow();
         }
 
-        private void ShowRegister()
+        public void ShowRegister()
         {
-            ShowPanel(registerPanel.gameObject);
+            ShowPanel(registerPanel);
         }
 
         public void ShowDirection()
         {
-            ShowPanel(swipePanel.gameObject);
+            ShowPanel(swipePanel);
         }
 
         public void ShowGameOver()
         {
-            ShowPanel(gameOverPanel.gameObject);
+            ShowPanel(gameOverPanel);
         }
     }
 }

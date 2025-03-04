@@ -1,28 +1,38 @@
-using System;
-using TMPro;
-using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine;
+using TMPro;
 
-public class GameOverController : MonoBehaviour
+namespace UI.Controllers
 {
-    [SerializeField] private Button resetBtn;
-    [SerializeField] private TMP_Text countdownTxt;
-    [SerializeField] private int countdownTime;
-    private int tweenId;
-    
-    private void Awake()
+    public class GameOverController : ControllerBase
     {
-        resetBtn.onClick.AddListener(OnReset);
-    }
+        [SerializeField] private Button resetBtn;
+        [SerializeField] private TMP_Text countdownTxt;
+        [SerializeField] private int countdownTime;
 
-    private void Start()
-    {
-        tweenId = LeanTween.value(countdownTime, 0, countdownTime).setOnUpdate(val =>
-            countdownTxt.text = Mathf.CeilToInt(val).ToString()).uniqueId;
-    }
+        private int tweenId;
 
-    private void OnReset()
-    {
-        LeanTween.cancel(tweenId);
+        public override void OnCreation(UIController context)
+        {
+            base.OnCreation(context);
+            
+            resetBtn.onClick.AddListener(OnReset);
+        }
+
+        public override void OnShow()
+        {
+            tweenId = LeanTween.value(countdownTime, 0, countdownTime).setOnUpdate(val =>
+                countdownTxt.text = Mathf.CeilToInt(val).ToString()).uniqueId;
+        }
+
+        public override void OnHide()
+        {
+        }
+
+        private void OnReset()
+        {
+            LeanTween.cancel(tweenId);
+        }
+
     }
 }
