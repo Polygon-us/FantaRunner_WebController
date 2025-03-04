@@ -21,8 +21,7 @@ namespace UI.Controllers
             swipePanel.OnCreation(this);
             gameOverPanel.OnCreation(this);
             
-            // ShowRegister();
-            ShowDirection();
+            ShowRegister();
         }
 
         private void ShowPanel(ControllerBase panel)

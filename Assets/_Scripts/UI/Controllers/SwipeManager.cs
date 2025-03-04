@@ -1,3 +1,5 @@
+using FirebaseCore.DTOs;
+using FirebaseCore.Listeners;
 using ThisOtherThing.UI.Shapes;
 using UnityEngine.InputSystem;
 using FirebaseCore.Senders;
@@ -28,7 +30,9 @@ namespace UI.Controllers
         private SwipeDirection direction;
 
         private TouchControls inputActions;
+        
         private DirectionSender directionSender;
+        private ResultListener resultListener;
 
         public override void OnCreation(UIController context)
         {
@@ -41,6 +45,8 @@ namespace UI.Controllers
         public override void OnShow()
         {
             directionSender = new DirectionSender(roomConfig.roomName);
+            resultListener = new ResultListener(roomConfig.roomName);
+            resultListener.OnDataReceived += OnGameFinish;
 
             ResetShadows();
         }
@@ -115,6 +121,13 @@ namespace UI.Controllers
             rightPolygon.ShadowProperties.ShowShadows = false;
 
             UiMeshesUpdate();
+        }
+
+        private void OnGameFinish(UserResultDto _)
+        {
+            resultListener.OnDataReceived -= OnGameFinish;
+            
+            Context.ShowGameOver();
         }
 
         public override void OnHide()
