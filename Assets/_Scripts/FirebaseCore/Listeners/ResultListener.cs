@@ -8,11 +8,11 @@ using UnityEngine;
 
 namespace FirebaseCore.Listeners
 {
-    public class UserListener : FirebaseListener<UserDataDto>
+    public class ResultListener : FirebaseListener<UserResultDto>
     {
-        private const string UserCollection = "user";
+        private const string ResultCollection = "result";
         
-        public UserListener(string room) : base(room)
+        public ResultListener(string room) : base(room)
         {
         }
         
@@ -25,7 +25,7 @@ namespace FirebaseCore.Listeners
         
         protected override void GetReference()
         {
-            Reference = FirebaseDatabase.DefaultInstance.GetReference($"{Room}/{UserCollection}");
+            Reference = FirebaseDatabase.DefaultInstance.GetReference($"{Room}/{ResultCollection}");
         }
 
         protected override void HandleChildChanged(object sender, ChildChangedEventArgs e)
