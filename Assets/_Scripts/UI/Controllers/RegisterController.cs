@@ -1,3 +1,5 @@
+using FirebaseCore.Listeners;
+using FirebaseCore.Senders;
 using Utils.Validations;
 using Utils.Responses;
 using UnityEngine.UI;
@@ -16,14 +18,18 @@ namespace UI.Controllers
         [SerializeField] private CustomInputField phoneInputField;
         [SerializeField] private Button sendButton;
         [SerializeField] private MockRegisterData mockRegisterData;
+        [SerializeField] private RoomConfig roomConfig;
         
         public Action OnRegistered;
+
+        private UserSender userSender;
+        private UserListener userListener;
 
         private void Awake()
         {
             sendButton.onClick.AddListener(SendRegister);
         }
-
+        
         private void Start()
         {
             if (!mockRegisterData)
@@ -33,6 +39,9 @@ namespace UI.Controllers
             usernameInputField.Text = mockRegisterData.RegisterMockData.username;
             emailInputField.Text = mockRegisterData.RegisterMockData.email;
             phoneInputField.Text = mockRegisterData.RegisterMockData.phone;
+            
+            userSender = new UserSender(roomConfig.roomName);
+            userListener = new UserListener(roomConfig.roomName);
         }
 
         private void SendRegister()
@@ -53,9 +62,14 @@ namespace UI.Controllers
                 return;
             }
 
-            FirestoreSender.Instance.SendUser(registerDto);
+            userSender.Send(registerDto);
             
             // OnRegistered?.Invoke();
+        }
+
+        private void OnDisable()
+        {
+            userListener.Disconnect();
         }
     }
 }
