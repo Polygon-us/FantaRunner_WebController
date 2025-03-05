@@ -10,8 +10,8 @@ namespace FirebaseCore.Listeners
 {
     public class DirectionListener : FirebaseListener<UserInputDto>
     {
-        private const string DirectionCollection = "direction";
-        
+        protected override string ChildName { get; set; } = "direction";
+
         public DirectionListener(string room) : base(room)
         {
         }
@@ -22,11 +22,6 @@ namespace FirebaseCore.Listeners
             Debug.Log(data);
         }
 #else
-        
-        protected override void GetReference()
-        {
-            Reference = FirebaseDatabase.DefaultInstance.GetReference($"{Room}/{DirectionCollection}");
-        }
 
         protected override void HandleChildChanged(object sender, ChildChangedEventArgs e)
         {

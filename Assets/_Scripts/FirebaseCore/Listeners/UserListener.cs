@@ -10,8 +10,8 @@ namespace FirebaseCore.Listeners
 {
     public class UserListener : FirebaseListener<UserDataDto>
     {
-        private const string UserCollection = "user";
-        
+        protected override string ChildName { get; set; } = "user";
+
         public UserListener(string room) : base(room)
         {
         }
@@ -22,15 +22,12 @@ namespace FirebaseCore.Listeners
             Debug.Log(data);
         }
 #else
-        
-        protected override void GetReference()
-        {
-            Reference = FirebaseDatabase.DefaultInstance.GetReference($"{Room}/{UserCollection}");
-        }
 
         protected override void HandleChildChanged(object sender, ChildChangedEventArgs e)
         {
             Debug.Log("Child changed/added: " + e.Snapshot.Key + " " + e.Snapshot.Value);
+            
+            // OnDataReceived?.Invoke(ConvertTo<UserDataDto>(e.Snapshot.Value));
         }
 
 #endif

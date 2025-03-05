@@ -704,7 +704,7 @@ MonoBehaviour:
     PointListProperties:
     - GeneratorData:
         Generator: 0
-        NeedsUpdate: 0
+        NeedsUpdate: 1
         Center: {x: 0, y: 0}
         Width: 50
         Height: 50
@@ -1752,7 +1752,7 @@ MonoBehaviour:
     PointListProperties:
     - GeneratorData:
         Generator: 0
-        NeedsUpdate: 0
+        NeedsUpdate: 1
         Center: {x: 0, y: 0}
         Width: 50
         Height: 50
@@ -1879,7 +1879,7 @@ MonoBehaviour:
     PointListProperties:
     - GeneratorData:
         Generator: 0
-        NeedsUpdate: 0
+        NeedsUpdate: 1
         Center: {x: 0, y: 0}
         Width: 50
         Height: 50
@@ -2281,7 +2281,7 @@ MonoBehaviour:
     PointListProperties:
     - GeneratorData:
         Generator: 0
-        NeedsUpdate: 0
+        NeedsUpdate: 1
         Center: {x: 0, y: 0}
         Width: 50
         Height: 50

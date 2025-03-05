@@ -17,6 +17,7 @@ namespace FirebaseCore.Listeners
     public abstract class FirebaseListener<TDto> where TDto : struct 
     {
         protected readonly string Room;
+        protected abstract string ChildName { get; set; }
 
         public Action<TDto> OnDataReceived;
         
@@ -24,7 +25,7 @@ namespace FirebaseCore.Listeners
         protected FirebaseListener(string room)
         {
             Room = room;
-
+            
             ListenToDatabaseChanges();
         }
 
@@ -61,17 +62,15 @@ namespace FirebaseCore.Listeners
             // Initialize Firebase
             await FirebaseApp.CheckAndFixDependenciesAsync();
             
-            GetReference();
+            Reference = FirebaseDatabase.DefaultInstance.GetReference($"{Room}/{ChildName}");
             
             ListenToChanges();
         }
 
-        protected abstract void GetReference();
-
         private void ListenToChanges()
         {
             Reference.ChildAdded += HandleChildChanged;
-            Reference.ChildChanged += HandleChildChanged;
+            // Reference.ChildChanged += HandleChildChanged;
         }
 
         protected abstract void HandleChildChanged(object sender, ChildChangedEventArgs e);
@@ -82,7 +81,7 @@ namespace FirebaseCore.Listeners
                 return;
             
             Reference.ChildAdded -= HandleChildChanged;
-            Reference.ChildChanged -= HandleChildChanged;
+            // Reference.ChildChanged -= HandleChildChanged;
         }
 #endif
 

@@ -1,6 +1,7 @@
 using FirebaseCore.Listeners;
 using FirebaseCore.Senders;
 using Utils.Validations;
+using FirebaseCore.DTOs;
 using Utils.Responses;
 using UnityEngine.UI;
 using UI.InputField;
@@ -44,6 +45,7 @@ namespace UI.Controllers
             
             userSender = new UserSender(roomConfig.roomName);
             userListener = new UserListener(roomConfig.roomName);
+            userListener.OnDataReceived += OnUserReceived;
         }
 
         private void SendRegister()
@@ -67,6 +69,12 @@ namespace UI.Controllers
             userSender.Send(registerDto);
             
             // OnRegistered?.Invoke();
+        }
+
+        private void OnUserReceived(UserDataDto _)
+        {
+            userListener.OnDataReceived -= OnUserReceived;
+            Context.ShowDirection();
         }
 
         public override void OnHide()
