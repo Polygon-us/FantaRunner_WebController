@@ -20,6 +20,7 @@ namespace FirebaseCore.Listeners
         protected override void HandleValueChanged(string data)
         {   
             Debug.Log(data);
+            OnDataReceived?.Invoke(new UserDataDto());
         }
 #else
 

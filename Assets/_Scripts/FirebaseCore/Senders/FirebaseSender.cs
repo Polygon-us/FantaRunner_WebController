@@ -22,6 +22,17 @@ namespace FirebaseCore.Senders
         {
             Room = room;
         }
+
+        public void Delete()
+        {
+            FirebaseDatabase.DeleteJSON
+            (
+                $"{Room}/{ChildName}",
+                FirebaseReceiver.Instance.Name,
+                FirebaseReceiver.Instance.SuccessCallback,
+                FirebaseReceiver.Instance.FailCallback
+            );
+        }
 #else
         protected DatabaseReference Reference;
 
@@ -32,17 +43,18 @@ namespace FirebaseCore.Senders
             GetReference();
         }
 
-        public void GetReference()
+        private void GetReference()
         {
             Reference = FirebaseDatabase.DefaultInstance.GetReference(Room).Child(ChildName);
+        }
+        
+        public void Delete()
+        {
+            Reference.RemoveValueAsync();
         }
 #endif
 
         public abstract void Send(T obj);
 
-        public void Delete()
-        {
-            Reference.RemoveValueAsync();
-        }
     }
 }

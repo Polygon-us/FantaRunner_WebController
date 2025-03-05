@@ -1,4 +1,7 @@
-﻿using Firebase.Database;
+﻿#if UNITY_WEBGL && !UNITY_EDITOR 
+#else
+using Firebase.Database;
+#endif
 using FirebaseCore.DTOs;
 using UnityEngine;
 
@@ -11,6 +14,12 @@ namespace FirebaseCore.Listeners
         public GameStateListener(string room) : base(room)
         {
         }
+#if UNITY_WEBGL && !UNITY_EDITOR 
+        protected override void HandleValueChanged(string data)
+        {   
+            Debug.Log(data);
+        }
+#else
 
         protected override void HandleChildChanged(object sender, ChildChangedEventArgs e)
         {
@@ -22,5 +31,6 @@ namespace FirebaseCore.Listeners
             
             OnDataReceived?.Invoke(gameStateDto);
         }
+#endif
     }
 }

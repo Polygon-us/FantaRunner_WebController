@@ -1,12 +1,12 @@
-﻿using DTOs.Firebase;
-using FirebaseCore.DTOs;
+﻿using FirebaseCore.DTOs;
+using Newtonsoft.Json;
+using DTOs.Firebase;
 using UnityEngine;
 
 #if UNITY_WEBGL && !UNITY_EDITOR
 using FirebaseWebGL.Scripts.FirebaseBridge;
 #else
 using Firebase.Database;
-using Newtonsoft.Json;
 #endif
 
 namespace FirebaseCore.Senders
@@ -25,7 +25,7 @@ namespace FirebaseCore.Senders
             FirebaseDatabase.PostJSON
             (
                 $"{Room}/{ChildName}",
-                sonConvert.SerializeObject(stateDto),
+                JsonConvert.SerializeObject(stateDto),
                 FirebaseReceiver.Instance.Name,
                 FirebaseReceiver.Instance.SuccessCallback,
                 FirebaseReceiver.Instance.FailCallback

@@ -1,7 +1,5 @@
 using System.Collections.Generic;
-using FirebaseCore.DTOs;
 using Newtonsoft.Json;
-using UnityEngine;
 using System;
 
 #if UNITY_WEBGL && !UNITY_EDITOR
@@ -32,10 +30,10 @@ namespace FirebaseCore.Listeners
         public void ListenToDatabaseChanges()
         {
             FirebaseReceiver receiver = FirebaseReceiver.Instance;
-            FirebaseDatabase.ListenForChildChanged(Room, receiver.Name, receiver.ChildChangedCallback, receiver.FailCallback);
-            FirebaseDatabase.ListenForChildAdded(Room, receiver.Name, receiver.ChildAddedCallback, receiver.FailCallback);
-            FirebaseReceiver.Instance.ChildChanged = HandleValueChanged;
-            FirebaseReceiver.Instance.ChildAdded = HandleValueChanged;
+            FirebaseDatabase.ListenForChildChanged($"{Room}/{ChildName}", receiver.Name, receiver.ChildChangedCallback, receiver.FailCallback);
+            // FirebaseDatabase.ListenForChildAdded($"{Room}/{ChildName}", receiver.Name, receiver.ChildAddedCallback, receiver.FailCallback);
+            FirebaseReceiver.Instance.ChildChanged += HandleValueChanged;
+            // FirebaseReceiver.Instance.ChildAdded += HandleValueChanged;
         }
 
         protected abstract void HandleValueChanged(string data);
@@ -43,8 +41,9 @@ namespace FirebaseCore.Listeners
         public void Disconnect()
         {
             FirebaseReceiver receiver = FirebaseReceiver.Instance;
-            FirebaseDatabase.StopListeningForChildChanged(Room, receiver.Name, receiver.ChildChangedCallback, receiver.FailCallback);
-            FirebaseDatabase.StopListeningForChildAdded(Room, receiver.Name, receiver.ChildAddedCallback, receiver.FailCallback);
+            FirebaseDatabase.StopListeningForChildChanged($"{Room}/{ChildName}", receiver.Name, receiver.ChildChangedCallback, receiver.FailCallback);
+            // FirebaseDatabase.StopListeningForChildAdded($"{Room}/{ChildName}", receiver.Name, receiver.ChildAddedCallback, receiver.FailCallback);
+            FirebaseReceiver.Instance.ChildChanged -= HandleValueChanged;
         }
 
 #else
@@ -66,7 +65,7 @@ namespace FirebaseCore.Listeners
 
         private void ListenToChanges()
         {
-            Reference.ChildAdded += HandleChildChanged;
+            // Reference.ChildAdded += HandleChildChanged;
             Reference.ChildChanged += HandleChildChanged;
         }
 
@@ -77,7 +76,7 @@ namespace FirebaseCore.Listeners
             if (Reference == null)
                 return;
             
-            Reference.ChildAdded -= HandleChildChanged;
+            // Reference.ChildAdded -= HandleChildChanged;
             Reference.ChildChanged -= HandleChildChanged;
         }
 #endif
