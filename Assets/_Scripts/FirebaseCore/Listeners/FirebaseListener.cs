@@ -54,14 +54,11 @@ namespace FirebaseCore.Listeners
         {
             Room = room;
 
-            Connect().Forget();
+            GetReference();
         }
 
-        private async UniTaskVoid Connect()
+        private void GetReference()
         {
-            // Initialize Firebase
-            await FirebaseApp.CheckAndFixDependenciesAsync();
-            
             Reference = FirebaseDatabase.DefaultInstance.GetReference($"{Room}/{ChildName}");
             
             ListenToChanges();
@@ -70,7 +67,7 @@ namespace FirebaseCore.Listeners
         private void ListenToChanges()
         {
             Reference.ChildAdded += HandleChildChanged;
-            // Reference.ChildChanged += HandleChildChanged;
+            Reference.ChildChanged += HandleChildChanged;
         }
 
         protected abstract void HandleChildChanged(object sender, ChildChangedEventArgs e);
@@ -81,7 +78,7 @@ namespace FirebaseCore.Listeners
                 return;
             
             Reference.ChildAdded -= HandleChildChanged;
-            // Reference.ChildChanged -= HandleChildChanged;
+            Reference.ChildChanged -= HandleChildChanged;
         }
 #endif
 

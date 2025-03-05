@@ -40,7 +40,7 @@ namespace UI.Controllers
             {
                 state = GameStates.Register
             };
-
+            
             gameStateSender.Send(gameStateDto);
         }
 

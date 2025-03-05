@@ -5,7 +5,7 @@
         public GameStates state;
     }
     
-    public enum GameStates
+    public enum GameStates : long
     {
         Register,
         Game,

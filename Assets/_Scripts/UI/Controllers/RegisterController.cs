@@ -24,10 +24,15 @@ namespace UI.Controllers
 
         private UserSender userSender;
         private UserListener userListener;
+        private GameStateSender gameStateSender;
 
         public override void OnCreation(RoomConfig roomConfig)
         {
             base.OnCreation(roomConfig);
+            
+            userSender = new UserSender(RoomConfig.roomName);
+            userListener = new UserListener(RoomConfig.roomName);
+            gameStateSender = new GameStateSender(RoomConfig.roomName);
             
             sendButton.onClick.AddListener(SendRegister);
         }
@@ -42,8 +47,6 @@ namespace UI.Controllers
                 phoneInputField.Text = mockRegisterData.RegisterMockData.phone;
             }
             
-            userSender = new UserSender(RoomConfig.roomName);
-            userListener = new UserListener(RoomConfig.roomName);
             userListener.OnDataReceived += OnUserReceived;
         }
 
@@ -73,6 +76,12 @@ namespace UI.Controllers
         private void OnUserReceived(UserDataDto _)
         {
             userListener.OnDataReceived -= OnUserReceived;
+
+            GameStateDto gameStateDto = new GameStateDto
+            {
+                state = GameStates.Game
+            };
+            gameStateSender.Send(gameStateDto);
         }
 
         public override void OnHide()

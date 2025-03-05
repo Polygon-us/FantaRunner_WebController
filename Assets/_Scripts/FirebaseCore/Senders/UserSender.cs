@@ -11,7 +11,7 @@ namespace FirebaseCore.Senders
 {
     public class UserSender : FirebaseSender<RegisterDto>
     {
-        private const string UserChild = "user";
+        protected override string ChildName { get; set; } = "user";
 
         public UserSender(string room) : base(room)
         {
@@ -22,7 +22,7 @@ namespace FirebaseCore.Senders
         {
             FirebaseDatabase.PostJSON
             (
-                $"{Room}/{UserChild}",
+                $"{Room}/{ChildName}",
                 JsonUtility.ToJson(registerDto),
                 FirebaseReceiver.Instance.Name,
                 FirebaseReceiver.Instance.SuccessCallback,
@@ -32,7 +32,7 @@ namespace FirebaseCore.Senders
 #else
         public override void Send(RegisterDto registerDto)
         {
-            Reference.Child(UserChild).SetRawJsonValueAsync(JsonUtility.ToJson(registerDto));
+            Reference.SetRawJsonValueAsync(JsonUtility.ToJson(registerDto));
         }
 #endif
     }

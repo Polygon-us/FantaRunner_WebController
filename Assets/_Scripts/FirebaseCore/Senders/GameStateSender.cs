@@ -6,13 +6,14 @@ using UnityEngine;
 using FirebaseWebGL.Scripts.FirebaseBridge;
 #else
 using Firebase.Database;
+using Newtonsoft.Json;
 #endif
 
 namespace FirebaseCore.Senders
 {
     public class GameStateSender : FirebaseSender<GameStateDto>
     {
-        private const string GameStateChild = "gameState";
+        protected override string ChildName { get; set; } = "gameState";
 
         public GameStateSender(string room) : base(room)
         {
@@ -23,8 +24,8 @@ namespace FirebaseCore.Senders
         {
             FirebaseDatabase.PostJSON
             (
-                $"{Room}/{GameStateChild}",
-                JsonUtility.ToJson(stateDto),
+                $"{Room}/{ChildName}",
+                sonConvert.SerializeObject(stateDto),
                 FirebaseReceiver.Instance.Name,
                 FirebaseReceiver.Instance.SuccessCallback,
                 FirebaseReceiver.Instance.FailCallback
@@ -33,7 +34,8 @@ namespace FirebaseCore.Senders
 #else
         public override void Send(GameStateDto stateDto)
         {
-            Reference.Child(GameStateChild).SetRawJsonValueAsync(JsonUtility.ToJson(stateDto));
+            string json = JsonConvert.SerializeObject(stateDto);
+            Reference.SetRawJsonValueAsync(json);
         }
 #endif
     }

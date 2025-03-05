@@ -28,6 +28,7 @@ namespace FirebaseCore.Listeners
             Debug.Log("Child changed/added: " + e.Snapshot.Key + " " + e.Snapshot.Value);
             
             // OnDataReceived?.Invoke(ConvertTo<UserDataDto>(e.Snapshot.Value));
+            OnDataReceived?.Invoke(new UserDataDto());
         }
 
 #endif

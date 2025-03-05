@@ -130,6 +130,7 @@ namespace UI.Controllers
 
         public override void OnHide()
         {
+            directionSender.Delete();
         }
     }
 }

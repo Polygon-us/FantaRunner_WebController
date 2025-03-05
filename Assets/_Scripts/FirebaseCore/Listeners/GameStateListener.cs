@@ -1,5 +1,6 @@
 ﻿using Firebase.Database;
 using FirebaseCore.DTOs;
+using UnityEngine;
 
 namespace FirebaseCore.Listeners
 {
@@ -13,7 +14,13 @@ namespace FirebaseCore.Listeners
 
         protected override void HandleChildChanged(object sender, ChildChangedEventArgs e)
         {
+            GameStateDto gameStateDto = new GameStateDto
+            {
+                state = (GameStates)e.Snapshot.Value
+            };
+            Debug.Log("Changed: " + e.Snapshot.Value);
             
+            OnDataReceived?.Invoke(gameStateDto);
         }
     }
 }

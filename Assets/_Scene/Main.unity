@@ -240,7 +240,7 @@ MonoBehaviour:
   registerPanel: {fileID: 812856655}
   swipePanel: {fileID: 285808675}
   gameOverPanel: {fileID: 2056452018}
-  roomConfig: {fileID: 0}
+  roomConfig: {fileID: 11400000, guid: 098aad004a0b05e4d935e61b27a8f08f, type: 2}
 --- !u!1001 &174054266
 PrefabInstance:
   m_ObjectHideFlags: 0
