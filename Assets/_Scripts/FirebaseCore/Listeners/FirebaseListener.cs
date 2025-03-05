@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using System;
+using UnityEngine;
 
-#if UNITY_WEBGL && !UNITY_EDITOR
+#if FIREBASE_WEB
 using FirebaseWebGL.Scripts.FirebaseBridge;
 #else
 using Cysharp.Threading.Tasks;
@@ -19,7 +20,7 @@ namespace FirebaseCore.Listeners
 
         public Action<TDto> OnDataReceived;
         
-#if UNITY_WEBGL && !UNITY_EDITOR
+#if FIREBASE_WEB
         protected FirebaseListener(string room)
         {
             Room = room;
@@ -29,11 +30,12 @@ namespace FirebaseCore.Listeners
 
         public void ListenToDatabaseChanges()
         {
+            Debug.Log("Listening to database changes to " + $"{Room}/{ChildName}");
             FirebaseReceiver receiver = FirebaseReceiver.Instance;
             FirebaseDatabase.ListenForChildChanged($"{Room}/{ChildName}", receiver.Name, receiver.ChildChangedCallback, receiver.FailCallback);
-            // FirebaseDatabase.ListenForChildAdded($"{Room}/{ChildName}", receiver.Name, receiver.ChildAddedCallback, receiver.FailCallback);
+            FirebaseDatabase.ListenForChildAdded($"{Room}/{ChildName}", receiver.Name, receiver.ChildAddedCallback, receiver.FailCallback);
             FirebaseReceiver.Instance.ChildChanged += HandleValueChanged;
-            // FirebaseReceiver.Instance.ChildAdded += HandleValueChanged;
+            FirebaseReceiver.Instance.ChildAdded += HandleValueChanged;
         }
 
         protected abstract void HandleValueChanged(string data);
@@ -42,8 +44,9 @@ namespace FirebaseCore.Listeners
         {
             FirebaseReceiver receiver = FirebaseReceiver.Instance;
             FirebaseDatabase.StopListeningForChildChanged($"{Room}/{ChildName}", receiver.Name, receiver.ChildChangedCallback, receiver.FailCallback);
-            // FirebaseDatabase.StopListeningForChildAdded($"{Room}/{ChildName}", receiver.Name, receiver.ChildAddedCallback, receiver.FailCallback);
+            FirebaseDatabase.StopListeningForChildAdded($"{Room}/{ChildName}", receiver.Name, receiver.ChildAddedCallback, receiver.FailCallback);
             FirebaseReceiver.Instance.ChildChanged -= HandleValueChanged;
+            FirebaseReceiver.Instance.ChildAdded -= HandleValueChanged;
         }
 
 #else

@@ -1,4 +1,4 @@
-﻿#if UNITY_WEBGL && !UNITY_EDITOR 
+﻿#if FIREBASE_WEB
 
 #else
 using Firebase.Database;
@@ -16,7 +16,7 @@ namespace FirebaseCore.Listeners
         {
         }
         
-#if UNITY_WEBGL && !UNITY_EDITOR 
+#if FIREBASE_WEB
         protected override void HandleValueChanged(string data)
         {   
             Debug.Log(data);

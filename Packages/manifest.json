@@ -2,6 +2,7 @@
   "dependencies": {
     "com.cysharp.unitask": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask",
     "com.febucci.custom-hierarchy": "https://github.com/febucci/unitypackage-custom-hierarchy.git",
+    "com.modernwestern.library": "https://github.com/ModernWestern/unity.modernwestern.library-package.git",
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.device-simulator.devices": "1.0.0",
     "com.unity.ide.rider": "3.0.34",
@@ -13,7 +14,9 @@
     "com.unity.modules.androidjni": "1.0.0",
     "com.unity.modules.audio": "1.0.0",
     "com.unity.modules.imageconversion": "1.0.0",
+    "com.unity.modules.particlesystem": "1.0.0",
     "com.unity.modules.ui": "1.0.0",
-    "com.unity.modules.umbra": "1.0.0"
+    "com.unity.modules.umbra": "1.0.0",
+    "com.unity.modules.unitywebrequest": "1.0.0"
   }
 }

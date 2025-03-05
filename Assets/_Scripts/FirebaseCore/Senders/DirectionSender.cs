@@ -4,7 +4,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using DTOs.Firebase;
 
-#if UNITY_WEBGL && !UNITY_EDITOR
+#if FIREBASE_WEB
 using FirebaseWebGL.Scripts.FirebaseBridge;
 #else
 using Firebase.Extensions;
@@ -38,7 +38,7 @@ namespace FirebaseCore.Senders
             directionData = new DirectionDto();
         }
 
-#if UNITY_WEBGL && !UNITY_EDITOR
+#if FIREBASE_WEB
         public override void Send(SwipeDirection direction)
         {
             FirebaseDatabase.UpdateJSON

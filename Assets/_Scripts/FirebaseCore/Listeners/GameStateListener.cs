@@ -1,7 +1,8 @@
-﻿#if UNITY_WEBGL && !UNITY_EDITOR 
+﻿#if FIREBASE_WEB
 #else
 using Firebase.Database;
 #endif
+using System;
 using FirebaseCore.DTOs;
 using UnityEngine;
 
@@ -14,10 +15,17 @@ namespace FirebaseCore.Listeners
         public GameStateListener(string room) : base(room)
         {
         }
-#if UNITY_WEBGL && !UNITY_EDITOR 
+#if FIREBASE_WEB
         protected override void HandleValueChanged(string data)
         {   
-            Debug.Log(data);
+            ChangedDataDto changeData = JsonUtility.FromJson<ChangedDataDto>(data);
+
+            GameStateDto gameStateDto = new GameStateDto
+            {
+                state = (GameStates)Enum.Parse(typeof(GameStates), changeData.value)
+            };
+            
+            OnDataReceived(gameStateDto);
         }
 #else
 

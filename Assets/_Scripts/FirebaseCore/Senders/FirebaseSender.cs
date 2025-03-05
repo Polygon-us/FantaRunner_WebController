@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 using UnityEngine;
 using System;
 
-#if UNITY_WEBGL && !UNITY_EDITOR
+#if FIREBASE_WEB
 using FirebaseWebGL.Scripts.FirebaseBridge;
 #else
 using Firebase.Database;
@@ -17,7 +17,7 @@ namespace FirebaseCore.Senders
         protected readonly string Room;
         protected abstract string ChildName { get; set; }
 
-#if UNITY_WEBGL && !UNITY_EDITOR
+#if FIREBASE_WEB
         protected FirebaseSender(string room)
         {
             Room = room;

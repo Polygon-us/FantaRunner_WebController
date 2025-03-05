@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 using DTOs.Firebase;
 using UnityEngine;
 
-#if UNITY_WEBGL && !UNITY_EDITOR
+#if FIREBASE_WEB
 using FirebaseWebGL.Scripts.FirebaseBridge;
 #else
 using Firebase.Database;
@@ -19,7 +19,7 @@ namespace FirebaseCore.Senders
         {
         }
 
-#if UNITY_WEBGL && !UNITY_EDITOR  
+#if FIREBASE_WEB  
         public override void Send(GameStateDto stateDto)
         {
             FirebaseDatabase.PostJSON
