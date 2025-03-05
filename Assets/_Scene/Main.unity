@@ -240,6 +240,7 @@ MonoBehaviour:
   registerPanel: {fileID: 812856655}
   swipePanel: {fileID: 285808675}
   gameOverPanel: {fileID: 2056452018}
+  roomConfig: {fileID: 0}
 --- !u!1001 &174054266
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1380,7 +1381,6 @@ MonoBehaviour:
   phoneInputField: {fileID: 557881835}
   sendButton: {fileID: 174054268}
   mockRegisterData: {fileID: 11400000, guid: f2e2221610d68fe4ba9b11ce3a2c43f4, type: 2}
-  roomConfig: {fileID: 11400000, guid: 098aad004a0b05e4d935e61b27a8f08f, type: 2}
 --- !u!1 &912936373
 GameObject:
   m_ObjectHideFlags: 0

@@ -12,9 +12,9 @@ namespace UI.Controllers
 
         private int tweenId;
 
-        public override void OnCreation(UIController context)
+        public override void OnCreation(RoomConfig roomConfig)
         {
-            base.OnCreation(context);
+            base.OnCreation(roomConfig);
             
             resetBtn.onClick.AddListener(OnReset);
         }

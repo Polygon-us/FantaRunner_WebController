@@ -4,11 +4,11 @@ namespace UI.Controllers
 {
     public abstract class ControllerBase : MonoBehaviour
     {
-        protected UIController Context;
+        protected RoomConfig RoomConfig;
 
-        public virtual void OnCreation(UIController context)
+        public virtual void OnCreation(RoomConfig roomConfig)
         {
-            Context = context;
+            RoomConfig = roomConfig;
         }
         
         public abstract void OnShow();

@@ -19,16 +19,15 @@ namespace UI.Controllers
         [SerializeField] private CustomInputField phoneInputField;
         [SerializeField] private Button sendButton;
         [SerializeField] private MockRegisterData mockRegisterData;
-        [SerializeField] private RoomConfig roomConfig;
         
         public Action OnRegistered;
 
         private UserSender userSender;
         private UserListener userListener;
 
-        public override void OnCreation(UIController context)
+        public override void OnCreation(RoomConfig roomConfig)
         {
-            base.OnCreation(context);
+            base.OnCreation(roomConfig);
             
             sendButton.onClick.AddListener(SendRegister);
         }
@@ -43,8 +42,8 @@ namespace UI.Controllers
                 phoneInputField.Text = mockRegisterData.RegisterMockData.phone;
             }
             
-            userSender = new UserSender(roomConfig.roomName);
-            userListener = new UserListener(roomConfig.roomName);
+            userSender = new UserSender(RoomConfig.roomName);
+            userListener = new UserListener(RoomConfig.roomName);
             userListener.OnDataReceived += OnUserReceived;
         }
 
@@ -74,7 +73,6 @@ namespace UI.Controllers
         private void OnUserReceived(UserDataDto _)
         {
             userListener.OnDataReceived -= OnUserReceived;
-            Context.ShowDirection();
         }
 
         public override void OnHide()

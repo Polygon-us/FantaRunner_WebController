@@ -34,9 +34,9 @@ namespace UI.Controllers
         private DirectionSender directionSender;
         private ResultListener resultListener;
 
-        public override void OnCreation(UIController context)
+        public override void OnCreation(RoomConfig roomConfig)
         {
-            base.OnCreation(context);
+            base.OnCreation(this.roomConfig);
             
             inputActions = new TouchControls();
             inputActions.Enable();
@@ -126,8 +126,6 @@ namespace UI.Controllers
         private void OnGameFinish(UserResultDto _)
         {
             resultListener.OnDataReceived -= OnGameFinish;
-            
-            Context.ShowGameOver();
         }
 
         public override void OnHide()
