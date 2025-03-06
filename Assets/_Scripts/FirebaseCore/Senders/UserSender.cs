@@ -2,6 +2,7 @@ using DTOs.Firebase;
 using UnityEngine;
 
 #if FIREBASE_WEB
+using FirebaseCore.Receivers;
 using FirebaseWebGL.Scripts.FirebaseBridge;
 #else
 using Firebase.Database;
@@ -20,14 +21,7 @@ namespace FirebaseCore.Senders
 #if FIREBASE_WEB  
         public override void Send(RegisterDto registerDto)
         {
-            FirebaseDatabase.PostJSON
-            (
-                $"{Room}/{ChildName}",
-                JsonUtility.ToJson(registerDto),
-                FirebaseReceiver.Instance.Name,
-                FirebaseReceiver.Instance.SuccessCallback,
-                FirebaseReceiver.Instance.FailCallback
-            );
+            Send(JsonUtility.ToJson(registerDto));
         }
 #else
         public override void Send(RegisterDto registerDto)

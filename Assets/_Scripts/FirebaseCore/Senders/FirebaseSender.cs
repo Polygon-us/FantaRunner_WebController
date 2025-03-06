@@ -4,6 +4,7 @@ using UnityEngine;
 using System;
 
 #if FIREBASE_WEB
+using FirebaseCore.Receivers;
 using FirebaseWebGL.Scripts.FirebaseBridge;
 #else
 using Firebase.Database;
@@ -23,14 +24,30 @@ namespace FirebaseCore.Senders
             Room = room;
         }
 
+        protected void Send(string json)
+        {
+            Receiver receiver = ReceiverManager.Instance.Register(GetType());
+            
+            FirebaseDatabase.UpdateJSON
+            (
+                $"{Room}/{ChildName}",
+                json,
+                receiver.Name,
+                receiver.SuccessCallback,
+                receiver.FailCallback
+            );
+        }
+
         public void Delete()
         {
+            Receiver receiver = ReceiverManager.Instance.Register(GetType());
+
             FirebaseDatabase.DeleteJSON
             (
                 $"{Room}/{ChildName}",
-                FirebaseReceiver.Instance.Name,
-                FirebaseReceiver.Instance.SuccessCallback,
-                FirebaseReceiver.Instance.FailCallback
+                receiver.Name,
+                receiver.SuccessCallback,
+                receiver.FailCallback
             );
         }
 #else

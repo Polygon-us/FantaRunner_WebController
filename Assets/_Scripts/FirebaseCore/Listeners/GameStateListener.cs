@@ -4,6 +4,7 @@ using Firebase.Database;
 #endif
 using System;
 using FirebaseCore.DTOs;
+using ModernWestern;
 using UnityEngine;
 
 namespace FirebaseCore.Listeners
@@ -15,6 +16,7 @@ namespace FirebaseCore.Listeners
         public GameStateListener(string room) : base(room)
         {
         }
+        
 #if FIREBASE_WEB
         protected override void HandleValueChanged(string data)
         {   
@@ -22,7 +24,7 @@ namespace FirebaseCore.Listeners
 
             GameStateDto gameStateDto = new GameStateDto
             {
-                state = (GameStates)Enum.Parse(typeof(GameStates), changeData.value)
+                state = changeData.value.ToEnum<GameStates>()
             };
             
             OnDataReceived(gameStateDto);

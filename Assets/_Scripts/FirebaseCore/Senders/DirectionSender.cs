@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using DTOs.Firebase;
 
 #if FIREBASE_WEB
+using FirebaseCore.Receivers;
 using FirebaseWebGL.Scripts.FirebaseBridge;
 #else
 using Firebase.Extensions;
@@ -41,14 +42,7 @@ namespace FirebaseCore.Senders
 #if FIREBASE_WEB
         public override void Send(SwipeDirection direction)
         {
-            FirebaseDatabase.UpdateJSON
-            (
-                $"{Room}/{ChildName}",
-                GetDirectionJson(values[direction], counter++),
-                FirebaseReceiver.Instance.Name,
-                FirebaseReceiver.Instance.SuccessCallback,
-                FirebaseReceiver.Instance.FailCallback
-            );
+            Send(GetDirectionJson(values[direction], counter++));
         }
 #else
         public override void Send(SwipeDirection direction)

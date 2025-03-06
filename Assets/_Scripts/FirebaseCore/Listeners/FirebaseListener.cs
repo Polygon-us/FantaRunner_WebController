@@ -4,6 +4,7 @@ using System;
 using UnityEngine;
 
 #if FIREBASE_WEB
+using FirebaseCore.Receivers;
 using FirebaseWebGL.Scripts.FirebaseBridge;
 #else
 using Cysharp.Threading.Tasks;
@@ -30,26 +31,26 @@ namespace FirebaseCore.Listeners
 
         public void ListenToDatabaseChanges()
         {
-            Debug.Log("Listening to database changes to " + $"{Room}/{ChildName}");
-            FirebaseReceiver receiver = FirebaseReceiver.Instance;
+            Receiver receiver = ReceiverManager.Instance.Register(GetType());
             FirebaseDatabase.ListenForChildChanged($"{Room}/{ChildName}", receiver.Name, receiver.ChildChangedCallback, receiver.FailCallback);
             FirebaseDatabase.ListenForChildAdded($"{Room}/{ChildName}", receiver.Name, receiver.ChildAddedCallback, receiver.FailCallback);
-            FirebaseReceiver.Instance.ChildChanged += HandleValueChanged;
-            FirebaseReceiver.Instance.ChildAdded += HandleValueChanged;
+            receiver.ChildAdded += HandleValueChanged;
+            receiver.ChildChanged += HandleValueChanged;
         }
 
         protected abstract void HandleValueChanged(string data);
         
         public void Disconnect()
         {
-            FirebaseReceiver receiver = FirebaseReceiver.Instance;
+            Receiver receiver = ReceiverManager.Instance.GetByType(GetType());
             FirebaseDatabase.StopListeningForChildChanged($"{Room}/{ChildName}", receiver.Name, receiver.ChildChangedCallback, receiver.FailCallback);
             FirebaseDatabase.StopListeningForChildAdded($"{Room}/{ChildName}", receiver.Name, receiver.ChildAddedCallback, receiver.FailCallback);
-            FirebaseReceiver.Instance.ChildChanged -= HandleValueChanged;
-            FirebaseReceiver.Instance.ChildAdded -= HandleValueChanged;
+            
+            ReceiverManager.Instance.Unregister(GetType());
         }
-
+        
 #else
+
         protected DatabaseReference Reference;
 
         protected FirebaseListener(string room)
