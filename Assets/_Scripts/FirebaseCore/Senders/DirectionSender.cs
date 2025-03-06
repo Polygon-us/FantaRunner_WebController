@@ -4,7 +4,8 @@ using UnityEngine;
 using System.Collections.Generic;
 using DTOs.Firebase;
 
-#if UNITY_WEBGL && !UNITY_EDITOR
+#if FIREBASE_WEB
+using FirebaseCore.Receivers;
 using FirebaseWebGL.Scripts.FirebaseBridge;
 #else
 using Firebase.Extensions;
@@ -18,7 +19,7 @@ namespace FirebaseCore.Senders
     {
         private int counter;
 
-        private const string DirectionChild = "movement";
+        protected override string ChildName { get; set; } = "movement";
 
         private readonly Dictionary<SwipeDirection, int> values = new()
         {
@@ -38,22 +39,15 @@ namespace FirebaseCore.Senders
             directionData = new DirectionDto();
         }
 
-#if UNITY_WEBGL && !UNITY_EDITOR
+#if FIREBASE_WEB
         public override void Send(SwipeDirection direction)
         {
-            FirebaseDatabase.UpdateJSON
-            (
-                $"{Room}/{DirectionChild}",
-                GetDirectionJson(values[direction], counter++),
-                FirebaseReceiver.Instance.Name,
-                FirebaseReceiver.Instance.SuccessCallback,
-                FirebaseReceiver.Instance.FailCallback
-            );
+            Send(GetDirectionJson(values[direction], counter++));
         }
 #else
         public override void Send(SwipeDirection direction)
         {
-            Reference.Child(DirectionChild).SetRawJsonValueAsync(GetDirectionJson(values[direction], counter++));
+            Reference.SetRawJsonValueAsync(GetDirectionJson(values[direction], counter++));
         }
 #endif
         

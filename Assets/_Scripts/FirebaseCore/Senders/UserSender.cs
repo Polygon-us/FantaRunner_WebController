@@ -1,7 +1,8 @@
 using DTOs.Firebase;
 using UnityEngine;
 
-#if UNITY_WEBGL && !UNITY_EDITOR
+#if FIREBASE_WEB
+using FirebaseCore.Receivers;
 using FirebaseWebGL.Scripts.FirebaseBridge;
 #else
 using Firebase.Database;
@@ -11,28 +12,21 @@ namespace FirebaseCore.Senders
 {
     public class UserSender : FirebaseSender<RegisterDto>
     {
-        private const string UserChild = "user";
+        protected override string ChildName { get; set; } = "user";
 
         public UserSender(string room) : base(room)
         {
         }
 
-#if UNITY_WEBGL && !UNITY_EDITOR  
+#if FIREBASE_WEB  
         public override void Send(RegisterDto registerDto)
         {
-            FirebaseDatabase.PostJSON
-            (
-                $"{Room}/{UserChild}",
-                JsonUtility.ToJson(registerDto),
-                FirebaseReceiver.Instance.Name,
-                FirebaseReceiver.Instance.SuccessCallback,
-                FirebaseReceiver.Instance.FailCallback
-            );
+            Send(JsonUtility.ToJson(registerDto));
         }
 #else
         public override void Send(RegisterDto registerDto)
         {
-            Reference.Child(UserChild).SetRawJsonValueAsync(JsonUtility.ToJson(registerDto));
+            Reference.SetRawJsonValueAsync(JsonUtility.ToJson(registerDto));
         }
 #endif
     }

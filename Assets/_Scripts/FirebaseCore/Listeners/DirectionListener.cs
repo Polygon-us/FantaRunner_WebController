@@ -1,4 +1,4 @@
-﻿#if UNITY_WEBGL && !UNITY_EDITOR 
+﻿#if FIREBASE_WEB
 
 #else
 using Firebase.Database;
@@ -10,23 +10,18 @@ namespace FirebaseCore.Listeners
 {
     public class DirectionListener : FirebaseListener<UserInputDto>
     {
-        private const string DirectionCollection = "direction";
-        
+        protected override string ChildName { get; set; } = "direction";
+
         public DirectionListener(string room) : base(room)
         {
         }
         
-#if UNITY_WEBGL && !UNITY_EDITOR 
+#if FIREBASE_WEB
         protected override void HandleValueChanged(string data)
         {   
             Debug.Log(data);
         }
 #else
-        
-        protected override void GetReference()
-        {
-            Reference = FirebaseDatabase.DefaultInstance.GetReference($"{Room}/{DirectionCollection}");
-        }
 
         protected override void HandleChildChanged(object sender, ChildChangedEventArgs e)
         {

@@ -1,3 +1,5 @@
+using FirebaseCore.DTOs;
+using FirebaseCore.Senders;
 using UnityEngine.UI;
 using UnityEngine;
 using TMPro;
@@ -11,10 +13,17 @@ namespace UI.Controllers
         [SerializeField] private int countdownTime;
 
         private int tweenId;
+        
+        GameStateSender gameStateSender;
+        UserSender userSender;
+        GameStateDto gameStateDto;
 
-        public override void OnCreation(UIController context)
+        public override void OnCreation(RoomConfig roomConfig)
         {
-            base.OnCreation(context);
+            base.OnCreation(roomConfig);
+            
+            userSender = new UserSender(roomConfig.roomName);
+            gameStateSender = new GameStateSender(roomConfig.roomName);
             
             resetBtn.onClick.AddListener(OnReset);
         }
@@ -22,16 +31,27 @@ namespace UI.Controllers
         public override void OnShow()
         {
             tweenId = LeanTween.value(countdownTime, 0, countdownTime).setOnUpdate(val =>
-                countdownTxt.text = Mathf.CeilToInt(val).ToString()).uniqueId;
+                countdownTxt.text = Mathf.CeilToInt(val).ToString()).setOnComplete(OnCountDown).uniqueId;
         }
 
         public override void OnHide()
         {
         }
 
+        private void OnCountDown()
+        {
+            userSender.Delete();
+            
+            gameStateDto.state = GameStates.Register;
+            gameStateSender.Send(gameStateDto);
+        }
+        
         private void OnReset()
         {
             LeanTween.cancel(tweenId);
+
+            gameStateDto.state = GameStates.Game;
+            gameStateSender.Send(gameStateDto);
         }
 
     }

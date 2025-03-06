@@ -1,6 +1,7 @@
 using FirebaseCore.Listeners;
 using FirebaseCore.Senders;
 using Utils.Validations;
+using FirebaseCore.DTOs;
 using Utils.Responses;
 using UnityEngine.UI;
 using UI.InputField;
@@ -18,16 +19,20 @@ namespace UI.Controllers
         [SerializeField] private CustomInputField phoneInputField;
         [SerializeField] private Button sendButton;
         [SerializeField] private MockRegisterData mockRegisterData;
-        [SerializeField] private RoomConfig roomConfig;
         
         public Action OnRegistered;
 
         private UserSender userSender;
         private UserListener userListener;
+        private GameStateSender gameStateSender;
 
-        public override void OnCreation(UIController context)
+        public override void OnCreation(RoomConfig roomConfig)
         {
-            base.OnCreation(context);
+            base.OnCreation(roomConfig);
+            
+            userSender = new UserSender(RoomConfig.roomName);
+            userListener = new UserListener(RoomConfig.roomName);
+            gameStateSender = new GameStateSender(RoomConfig.roomName);
             
             sendButton.onClick.AddListener(SendRegister);
         }
@@ -42,8 +47,7 @@ namespace UI.Controllers
                 phoneInputField.Text = mockRegisterData.RegisterMockData.phone;
             }
             
-            userSender = new UserSender(roomConfig.roomName);
-            userListener = new UserListener(roomConfig.roomName);
+            userListener.OnDataReceived += OnUserReceived;
         }
 
         private void SendRegister()
@@ -67,6 +71,17 @@ namespace UI.Controllers
             userSender.Send(registerDto);
             
             // OnRegistered?.Invoke();
+        }
+
+        private void OnUserReceived(UserDataDto _)
+        {
+            userListener.OnDataReceived -= OnUserReceived;
+
+            GameStateDto gameStateDto = new GameStateDto
+            {
+                state = GameStates.Game
+            };
+            gameStateSender.Send(gameStateDto);
         }
 
         public override void OnHide()

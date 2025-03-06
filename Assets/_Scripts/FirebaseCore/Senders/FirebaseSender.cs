@@ -3,12 +3,11 @@ using Newtonsoft.Json;
 using UnityEngine;
 using System;
 
-#if UNITY_WEBGL && !UNITY_EDITOR
+#if FIREBASE_WEB
+using FirebaseCore.Receivers;
 using FirebaseWebGL.Scripts.FirebaseBridge;
 #else
-using Firebase.Extensions;
 using Firebase.Database;
-using Firebase;
 #endif
 
 
@@ -17,34 +16,62 @@ namespace FirebaseCore.Senders
     public abstract class FirebaseSender<T>
     {
         protected readonly string Room;
-        
-#if UNITY_WEBGL && !UNITY_EDITOR        
+        protected abstract string ChildName { get; set; }
+
+#if FIREBASE_WEB
+        protected FirebaseSender(string room)
+        {
+            Room = room;
+        }
+
+        protected void Send(string json)
+        {
+            Receiver receiver = ReceiverManager.Instance.Register(GetType());
+            
+            FirebaseDatabase.UpdateJSON
+            (
+                $"{Room}/{ChildName}",
+                json,
+                receiver.Name,
+                receiver.SuccessCallback,
+                receiver.FailCallback
+            );
+        }
+
+        public void Delete()
+        {
+            Receiver receiver = ReceiverManager.Instance.Register(GetType());
+
+            FirebaseDatabase.DeleteJSON
+            (
+                $"{Room}/{ChildName}",
+                receiver.Name,
+                receiver.SuccessCallback,
+                receiver.FailCallback
+            );
+        }
+#else
+        protected DatabaseReference Reference;
 
         protected FirebaseSender(string room)
         {
             Room = room;
+
+            GetReference();
         }
-#else
-        protected DatabaseReference Reference;
-        
-        protected FirebaseSender(string room)
+
+        private void GetReference()
         {
-            Room = room;
-            
-            FirebaseApp.CheckAndFixDependenciesAsync().ContinueWithOnMainThread(task =>
-            {
-                if (task.IsCompleted)
-                {
-                    Reference = FirebaseDatabase.DefaultInstance.GetReference(Room);
-                }
-                else
-                {
-                    Debug.LogError("Could not resolve Firebase dependencies: " + task.Exception);
-                }
-            });
+            Reference = FirebaseDatabase.DefaultInstance.GetReference(Room).Child(ChildName);
+        }
+        
+        public void Delete()
+        {
+            Reference.RemoveValueAsync();
         }
 #endif
-        
+
         public abstract void Send(T obj);
+
     }
 }
