@@ -31,7 +31,6 @@ namespace UI.Controllers
             base.OnCreation(roomConfig);
             
             userSender = new UserSender(RoomConfig.roomName);
-            userListener = new UserListener(RoomConfig.roomName);
             gameStateSender = new GameStateSender(RoomConfig.roomName);
             
             sendButton.onClick.AddListener(SendRegister);
@@ -47,6 +46,7 @@ namespace UI.Controllers
                 phoneInputField.Text = mockRegisterData.RegisterMockData.phone;
             }
             
+            userListener = new UserListener(RoomConfig.roomName);
             userListener.OnDataReceived += OnUserReceived;
         }
 
