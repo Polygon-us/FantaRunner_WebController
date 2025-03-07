@@ -42,22 +42,11 @@ namespace UI.Controllers
             inputActions.Enable();
          
             ResetShadows();
-        }
-
-        private void OnEnable()
-        {
+      
             inputActions.Main.Touch.performed += OnTouchPerformed;
             inputActions.Main.Touch.canceled += OnTouchCanceled;
 
             inputActions.Main.Swipe.performed += OnSwipePerformed;
-        }
-
-        private void OnDisable()
-        {
-            inputActions.Main.Touch.performed -= OnTouchPerformed;
-            inputActions.Main.Touch.canceled -= OnTouchCanceled;
-
-            inputActions.Main.Swipe.performed -= OnSwipePerformed;
         }
 
         private void OnTouchPerformed(InputAction.CallbackContext context)
@@ -137,6 +126,11 @@ namespace UI.Controllers
         {
             directionSender.Delete();
             inputActions.Disable();
+            
+            inputActions.Main.Touch.performed -= OnTouchPerformed;
+            inputActions.Main.Touch.canceled -= OnTouchCanceled;
+
+            inputActions.Main.Swipe.performed -= OnSwipePerformed;
         }
     }
 }
