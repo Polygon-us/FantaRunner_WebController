@@ -522,7 +522,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74cd2a90ead64f94eb81d759453800b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minSwipeDistance: 4
   upPolygon: {fileID: 1267491977}
   downPolygon: {fileID: 1314394698}
   leftPolygon: {fileID: 377873215}
@@ -1379,7 +1378,7 @@ MonoBehaviour:
   emailInputField: {fileID: 1871197134}
   phoneInputField: {fileID: 557881835}
   sendButton: {fileID: 174054268}
-  mockRegisterData: {fileID: 11400000, guid: f2e2221610d68fe4ba9b11ce3a2c43f4, type: 2}
+  mockRegisterData: {fileID: 0}
 --- !u!1 &912936373
 GameObject:
   m_ObjectHideFlags: 0
