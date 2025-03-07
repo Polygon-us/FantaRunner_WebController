@@ -67,6 +67,7 @@ namespace UI.InputField
         private void ShowKeyboard(string text)
         {
             Debug.Log("Show Keyboard");
+            
             TouchScreenKeyboard.Open(text, keyboardType, false, false, false, false, text);
         }
 
