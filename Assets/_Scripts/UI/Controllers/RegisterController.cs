@@ -23,6 +23,7 @@ namespace UI.Controllers
         public Action OnRegistered;
 
         private UserSender userSender;
+        private UserDatabaseSender userDatabaseSender;
         private UserListener userListener;
         private GameStateSender gameStateSender;
 
@@ -31,6 +32,7 @@ namespace UI.Controllers
             base.OnCreation(roomConfig);
             
             userSender = new UserSender(RoomConfig.roomName);
+            userDatabaseSender = new UserDatabaseSender(RoomConfig.roomName);
             gameStateSender = new GameStateSender(RoomConfig.roomName);
             
             sendButton.onClick.AddListener(SendRegister);
@@ -69,6 +71,7 @@ namespace UI.Controllers
             }
 
             userSender.Send(registerDto);
+            userDatabaseSender.Send(registerDto);
             
             // OnRegistered?.Invoke();
         }

@@ -1,5 +1,3 @@
-using FirebaseCore.DTOs;
-using FirebaseCore.Listeners;
 using ThisOtherThing.UI.Shapes;
 using UnityEngine.InputSystem;
 using FirebaseCore.Senders;
@@ -19,7 +17,6 @@ namespace UI.Controllers
     public class SwipeManager : ControllerBase
     {
         [SerializeField] private float minSwipeDistance = 10f;
-        [SerializeField] private RoomConfig roomConfig;
         [Space]
         [SerializeField] private Polygon upPolygon;
         [SerializeField] private Polygon downPolygon;
@@ -35,7 +32,7 @@ namespace UI.Controllers
 
         public override void OnCreation(RoomConfig roomConfig)
         {
-            base.OnCreation(this.roomConfig);
+            base.OnCreation(roomConfig);
             
             inputActions = new TouchControls();
             inputActions.Enable();
