@@ -61,7 +61,7 @@ namespace UI.InputField
         {
             EnsureInitialized();
 
-            inputField.onSelect.AddListener(ShowKeyboard);
+            // inputField.onSelect.AddListener(ShowKeyboard);
         }
 
         private void ShowKeyboard(string text)
