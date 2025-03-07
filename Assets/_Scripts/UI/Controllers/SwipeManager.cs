@@ -1,5 +1,4 @@
 using ThisOtherThing.UI.Shapes;
-using UnityEngine.InputSystem;
 using FirebaseCore.Senders;
 using UnityEngine;
 
@@ -23,9 +22,10 @@ namespace UI.Controllers
         [SerializeField] private Polygon leftPolygon;
         [SerializeField] private Polygon rightPolygon;
 
-        private Vector2 swipeDirection = Vector2.zero;
+        private Vector2 startingTouch = Vector2.zero;
         private SwipeDirection direction;
-
+        private bool isSwiping;
+        
         private TouchControls inputActions;
         
         private DirectionSender directionSender;
@@ -45,36 +45,47 @@ namespace UI.Controllers
             ResetShadows();
         }
 
-        private void OnEnable()
-        {
-            inputActions.Main.Swipe.performed += ProcessSwipe;
-            inputActions.Main.Touch.canceled += ProcessTouch;
-        }
+        // private void OnEnable()
+        // {
+        //     inputActions.Main.Touch.performed += ProcessTouch;
+        // }
+        //
+        // private void OnDisable()
+        // {
+        //     inputActions.Main.Touch.performed -= ProcessTouch;
+        // }
 
-        private void OnDisable()
+        private void Update()
         {
-            inputActions.Main.Swipe.performed -= ProcessSwipe;
-            inputActions.Main.Touch.canceled -= ProcessTouch;
-        }
-
-        private void ProcessSwipe(InputAction.CallbackContext ctx)
-        {
-            swipeDirection = ctx.ReadValue<Vector2>();
-        }
-
-        private void ProcessTouch(InputAction.CallbackContext context)
-        {
-            if (Mathf.Abs(swipeDirection.magnitude) < minSwipeDistance)
+            if (inputActions.Main.Touch.WasPerformedThisFrame())
             {
+                isSwiping = true;
                 direction = SwipeDirection.None;
+                startingTouch = inputActions.Main.Swipe.ReadValue<Vector2>();
                 ResetShadows();
-                return;
             }
 
-            direction = GetSwipeDirection(swipeDirection);
+            if (inputActions.Main.Touch.WasReleasedThisFrame())
+            {
+                isSwiping = false;
+            }
 
-            directionSender.Send(direction);
-            UpdateShadows(direction);
+            if (isSwiping)
+            {
+                Vector2 diff = inputActions.Main.Swipe.ReadValue<Vector2>() - startingTouch;
+                
+                diff = new Vector2(diff.x / Screen.width, diff.y / Screen.width);
+
+                if (diff.magnitude > 0.05f)
+                {
+                    direction = GetSwipeDirection(diff);
+
+                    directionSender.Send(direction);
+                    UpdateShadows(direction);
+                   
+                    isSwiping = false;
+                }
+            }
         }
 
         private SwipeDirection GetSwipeDirection(Vector2 swipeDirection)

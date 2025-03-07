@@ -523,7 +523,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   minSwipeDistance: 4
-  roomConfig: {fileID: 11400000, guid: 098aad004a0b05e4d935e61b27a8f08f, type: 2}
   upPolygon: {fileID: 1267491977}
   downPolygon: {fileID: 1314394698}
   leftPolygon: {fileID: 377873215}
@@ -1198,7 +1197,7 @@ MonoBehaviour:
   m_ActionsAsset: {fileID: -944628639613478452, guid: 1e0a18856b239404dbf7090c8c51924e, type: 3}
   m_PointAction: {fileID: -8747122761588513136, guid: 1e0a18856b239404dbf7090c8c51924e, type: 3}
   m_MoveAction: {fileID: 0}
-  m_SubmitAction: {fileID: 0}
+  m_SubmitAction: {fileID: 8737417031431835731, guid: 1e0a18856b239404dbf7090c8c51924e, type: 3}
   m_CancelAction: {fileID: 0}
   m_LeftClickAction: {fileID: 8737417031431835731, guid: 1e0a18856b239404dbf7090c8c51924e, type: 3}
   m_MiddleClickAction: {fileID: 0}
