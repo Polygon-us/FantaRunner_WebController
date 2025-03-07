@@ -1,4 +1,5 @@
 using ThisOtherThing.UI.Shapes;
+using UnityEngine.InputSystem;
 using FirebaseCore.Senders;
 using UnityEngine;
 
@@ -16,7 +17,7 @@ namespace UI.Controllers
     public class SwipeManager : ControllerBase
     {
         [SerializeField] private float minSwipeDistance = 10f;
-        [Space]
+        [Space] 
         [SerializeField] private Polygon upPolygon;
         [SerializeField] private Polygon downPolygon;
         [SerializeField] private Polygon leftPolygon;
@@ -25,18 +26,18 @@ namespace UI.Controllers
         private Vector2 startingTouch = Vector2.zero;
         private SwipeDirection direction;
         private bool isSwiping;
-        
+
         private TouchControls inputActions;
-        
+
         private DirectionSender directionSender;
 
         public override void OnCreation(RoomConfig roomConfig)
         {
             base.OnCreation(roomConfig);
-            
+
             inputActions = new TouchControls();
             inputActions.Enable();
-            
+
             directionSender = new DirectionSender(roomConfig.roomName);
         }
 
@@ -45,46 +46,52 @@ namespace UI.Controllers
             ResetShadows();
         }
 
-        // private void OnEnable()
-        // {
-        //     inputActions.Main.Touch.performed += ProcessTouch;
-        // }
-        //
-        // private void OnDisable()
-        // {
-        //     inputActions.Main.Touch.performed -= ProcessTouch;
-        // }
-
-        private void Update()
+        private void OnEnable()
         {
-            if (inputActions.Main.Touch.WasPerformedThisFrame())
-            {
-                isSwiping = true;
-                direction = SwipeDirection.None;
-                startingTouch = inputActions.Main.Swipe.ReadValue<Vector2>();
-                ResetShadows();
-            }
+            inputActions.Main.Touch.performed += OnTouchPerformed;
+            inputActions.Main.Touch.canceled += OnTouchCanceled;
 
-            if (inputActions.Main.Touch.WasReleasedThisFrame())
+            inputActions.Main.Swipe.performed += OnSwipePerformed;
+        }
+
+        private void OnDisable()
+        {
+            inputActions.Main.Touch.performed -= OnTouchPerformed;
+            inputActions.Main.Touch.canceled -= OnTouchCanceled;
+
+            inputActions.Main.Swipe.performed -= OnSwipePerformed;
+        }
+
+        private void OnTouchPerformed(InputAction.CallbackContext context)
+        {
+            isSwiping = true;
+            direction = SwipeDirection.None;
+            startingTouch = inputActions.Main.Swipe.ReadValue<Vector2>();
+            ResetShadows();
+        }
+
+        private void OnTouchCanceled(InputAction.CallbackContext context)
+        {
+            isSwiping = false;
+        }
+
+        private void OnSwipePerformed(InputAction.CallbackContext context)
+        {
+            if (!isSwiping)
+                return;
+
+            Vector2 diff = inputActions.Main.Swipe.ReadValue<Vector2>() - startingTouch;
+
+            diff = new Vector2(diff.x / Screen.width, diff.y / Screen.width);
+
+            if (diff.magnitude > 0.05f)
             {
+                direction = GetSwipeDirection(diff);
+
+                directionSender.Send(direction);
+                UpdateShadows(direction);
+
                 isSwiping = false;
-            }
-
-            if (isSwiping)
-            {
-                Vector2 diff = inputActions.Main.Swipe.ReadValue<Vector2>() - startingTouch;
-                
-                diff = new Vector2(diff.x / Screen.width, diff.y / Screen.width);
-
-                if (diff.magnitude > 0.05f)
-                {
-                    direction = GetSwipeDirection(diff);
-
-                    directionSender.Send(direction);
-                    UpdateShadows(direction);
-                   
-                    isSwiping = false;
-                }
             }
         }
 
