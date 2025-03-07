@@ -20,12 +20,8 @@ namespace UI.Controllers
         [SerializeField] private Button sendButton;
         [SerializeField] private MockRegisterData mockRegisterData;
         
-        public Action OnRegistered;
-
         private UserSender userSender;
         private UserDatabaseSender userDatabaseSender;
-        private UserListener userListener;
-        private GameStateSender gameStateSender;
 
         public override void OnCreation(RoomConfig roomConfig)
         {
@@ -33,7 +29,6 @@ namespace UI.Controllers
             
             userSender = new UserSender(RoomConfig.roomName);
             userDatabaseSender = new UserDatabaseSender(RoomConfig.roomName);
-            gameStateSender = new GameStateSender(RoomConfig.roomName);
             
             sendButton.onClick.AddListener(SendRegister);
         }
@@ -48,8 +43,7 @@ namespace UI.Controllers
                 phoneInputField.Text = mockRegisterData.RegisterMockData.phone;
             }
             
-            userListener = new UserListener(RoomConfig.roomName);
-            userListener.OnDataReceived += OnUserReceived;
+            userSender.Delete();
         }
 
         private void SendRegister()
@@ -76,20 +70,9 @@ namespace UI.Controllers
             // OnRegistered?.Invoke();
         }
 
-        private void OnUserReceived(UserDataDto _)
-        {
-            userListener.OnDataReceived -= OnUserReceived;
-
-            GameStateDto gameStateDto = new GameStateDto
-            {
-                state = GameStates.Game
-            };
-            gameStateSender.Send(gameStateDto);
-        }
-
         public override void OnHide()
         {
-            userListener.Disconnect();
+            
         }
     }
 }
