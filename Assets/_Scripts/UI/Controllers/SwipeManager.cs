@@ -32,15 +32,15 @@ namespace UI.Controllers
         public override void OnCreation(RoomConfig roomConfig)
         {
             base.OnCreation(roomConfig);
-
-            inputActions = new TouchControls();
-            inputActions.Enable();
-
+            
             directionSender = new DirectionSender(roomConfig.roomName);
         }
 
         public override void OnShow()
         {
+            inputActions = new TouchControls();
+            inputActions.Enable();
+         
             ResetShadows();
         }
 
@@ -136,6 +136,7 @@ namespace UI.Controllers
         public override void OnHide()
         {
             directionSender.Delete();
+            inputActions.Disable();
         }
     }
 }
