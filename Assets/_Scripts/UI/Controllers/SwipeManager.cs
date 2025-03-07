@@ -17,26 +17,27 @@ namespace UI.Controllers
     public class SwipeManager : ControllerBase
     {
         [SerializeField] private float minSwipeDistance = 10f;
-        [Space]
+        [Space] 
         [SerializeField] private Polygon upPolygon;
         [SerializeField] private Polygon downPolygon;
         [SerializeField] private Polygon leftPolygon;
         [SerializeField] private Polygon rightPolygon;
 
-        private Vector2 swipeDirection = Vector2.zero;
+        private Vector2 startingTouch = Vector2.zero;
         private SwipeDirection direction;
+        private bool isSwiping;
 
         private TouchControls inputActions;
-        
+
         private DirectionSender directionSender;
 
         public override void OnCreation(RoomConfig roomConfig)
         {
             base.OnCreation(roomConfig);
-            
+
             inputActions = new TouchControls();
             inputActions.Enable();
-            
+
             directionSender = new DirectionSender(roomConfig.roomName);
         }
 
@@ -47,34 +48,51 @@ namespace UI.Controllers
 
         private void OnEnable()
         {
-            inputActions.Main.Swipe.performed += ProcessSwipe;
-            inputActions.Main.Touch.canceled += ProcessTouch;
+            inputActions.Main.Touch.performed += OnTouchPerformed;
+            inputActions.Main.Touch.canceled += OnTouchCanceled;
+
+            inputActions.Main.Swipe.performed += OnSwipePerformed;
         }
 
         private void OnDisable()
         {
-            inputActions.Main.Swipe.performed -= ProcessSwipe;
-            inputActions.Main.Touch.canceled -= ProcessTouch;
+            inputActions.Main.Touch.performed -= OnTouchPerformed;
+            inputActions.Main.Touch.canceled -= OnTouchCanceled;
+
+            inputActions.Main.Swipe.performed -= OnSwipePerformed;
         }
 
-        private void ProcessSwipe(InputAction.CallbackContext ctx)
+        private void OnTouchPerformed(InputAction.CallbackContext context)
         {
-            swipeDirection = ctx.ReadValue<Vector2>();
+            isSwiping = true;
+            direction = SwipeDirection.None;
+            startingTouch = inputActions.Main.Swipe.ReadValue<Vector2>();
+            ResetShadows();
         }
 
-        private void ProcessTouch(InputAction.CallbackContext context)
+        private void OnTouchCanceled(InputAction.CallbackContext context)
         {
-            if (Mathf.Abs(swipeDirection.magnitude) < minSwipeDistance)
-            {
-                direction = SwipeDirection.None;
-                ResetShadows();
+            isSwiping = false;
+        }
+
+        private void OnSwipePerformed(InputAction.CallbackContext context)
+        {
+            if (!isSwiping)
                 return;
+
+            Vector2 diff = inputActions.Main.Swipe.ReadValue<Vector2>() - startingTouch;
+
+            diff = new Vector2(diff.x / Screen.width, diff.y / Screen.width);
+
+            if (diff.magnitude > 0.05f)
+            {
+                direction = GetSwipeDirection(diff);
+
+                directionSender.Send(direction);
+                UpdateShadows(direction);
+
+                isSwiping = false;
             }
-
-            direction = GetSwipeDirection(swipeDirection);
-
-            directionSender.Send(direction);
-            UpdateShadows(direction);
         }
 
         private SwipeDirection GetSwipeDirection(Vector2 swipeDirection)

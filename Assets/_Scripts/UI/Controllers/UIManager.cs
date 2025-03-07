@@ -83,5 +83,10 @@ namespace UI.Controllers
                     break;
             }
         }
+
+        private void OnDisable()
+        {
+            gameStateListener.Disconnect();
+        }
     }
 }

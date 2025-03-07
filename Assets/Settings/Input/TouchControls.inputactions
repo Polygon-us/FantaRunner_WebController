@@ -7,7 +7,7 @@
             "actions": [
                 {
                     "name": "Swipe",
-                    "type": "Value",
+                    "type": "PassThrough",
                     "id": "f87b628d-81a5-4ca1-a9e7-c2055e3cba6c",
                     "expectedControlType": "Vector2",
                     "processors": "",
@@ -16,9 +16,9 @@
                 },
                 {
                     "name": "Touch",
-                    "type": "PassThrough",
+                    "type": "Button",
                     "id": "cda92dab-b1c0-4729-9d81-f74e4ec37628",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
@@ -28,7 +28,7 @@
                 {
                     "name": "",
                     "id": "7109299b-7e3d-4099-9d49-56bef3ed2d04",
-                    "path": "<Touchscreen>/delta",
+                    "path": "<Touchscreen>/position",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -39,7 +39,7 @@
                 {
                     "name": "",
                     "id": "ccdf72be-f26f-44c5-9ab2-3ddc9853f446",
-                    "path": "<Mouse>/delta",
+                    "path": "<Mouse>/position",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -61,7 +61,7 @@
                 {
                     "name": "",
                     "id": "86013790-d4ff-4501-8f64-835390939e64",
-                    "path": "<Mouse>/leftButton",
+                    "path": "<Mouse>/press",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
