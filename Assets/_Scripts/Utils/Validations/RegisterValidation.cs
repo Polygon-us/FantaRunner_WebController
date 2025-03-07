@@ -10,7 +10,7 @@ namespace Utils.Validations
             if (!InputValidator.IsValidEmail(registerDto.email))
             {
                 return ResultResponse<RegisterDto>.Failure(
-                    "Invalid email format or email is too long.",
+                    "El email es no es correcto.",
                     "EMAIL_INVALID"
                 );
             }
@@ -18,7 +18,7 @@ namespace Utils.Validations
             if (!InputValidator.IsValidName(registerDto.name))
             {
                 return ResultResponse<RegisterDto>.Failure(
-                    "name must be at least 3 characters long.",
+                    "Nombre debe tener más de 3 caracteres.",
                     "NAME_TOO_SHORT"
                 );
             }
@@ -26,7 +26,7 @@ namespace Utils.Validations
             if (!InputValidator.IsValidName(registerDto.username))
             {
                 return ResultResponse<RegisterDto>.Failure(
-                    "name must be at least 3 characters long.",
+                    "Usuario debe taner más de 3 caracteres.",
                     "NAME_TOO_SHORT"
                 );
             }
@@ -34,7 +34,7 @@ namespace Utils.Validations
             if (!InputValidator.IsValidPhoneNumber(registerDto.phone))
             {
                 return ResultResponse<RegisterDto>.Failure(
-                    "phone number must be a valid phone number.",
+                    "El número de celular es incorrecto.",
                     "PHONE_INVALID"
                 );
             }

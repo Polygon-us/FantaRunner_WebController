@@ -17,6 +17,7 @@ namespace UI.Controllers
         [SerializeField] private CustomInputField usernameInputField;
         [SerializeField] private CustomInputField emailInputField;
         [SerializeField] private CustomInputField phoneInputField;
+        [SerializeField] private MessagePopup messagePopup;
         [SerializeField] private Button sendButton;
         [SerializeField] private MockRegisterData mockRegisterData;
         
@@ -60,7 +61,7 @@ namespace UI.Controllers
 
             if (!validation.IsSuccess)
             {
-                Debug.Log(validation.ErrorMessage);
+                messagePopup.Show(validation.ErrorMessage);
                 return;
             }
 
