@@ -16,8 +16,6 @@ namespace UI.Controllers
 {
     public class SwipeManager : ControllerBase
     {
-        [SerializeField] private float minSwipeDistance = 10f;
-        [Space] 
         [SerializeField] private Polygon upPolygon;
         [SerializeField] private Polygon downPolygon;
         [SerializeField] private Polygon leftPolygon;
@@ -84,7 +82,7 @@ namespace UI.Controllers
 
             diff = new Vector2(diff.x / Screen.width, diff.y / Screen.width);
 
-            if (diff.magnitude > 0.05f)
+            if (diff.magnitude > 0.1f)
             {
                 direction = GetSwipeDirection(diff);
 
