@@ -3,83 +3,55 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>BunnyRunner_WebController</title>
-    <link rel="shortcut icon" href="TemplateData/favicon.ico">
-    <link rel="stylesheet" href="TemplateData/style.css">
+    <title>Unity Web Player | BunnyRunner_WebController</title>
   </head>
-  <body class="dark">
-    <div id="unity-container" class="unity-desktop">
-      <canvas id="unity-canvas"></canvas>
-    </div>
-    <div id="loading-cover" style="display:none;">
-      <div id="unity-loading-bar">
-        <div id="unity-logo"><img src="logo.png"></div>
-        <div id="unity-progress-bar-empty" style="display: none;">
-          <div id="unity-progress-bar-full"></div>
-        </div>
-        <div class="spinner"></div>
-      </div>
-    </div>
+  <body style="text-align: center; padding: 0; border: 0; margin: 0;">
+    <canvas id="unity-canvas" width=405 height=720 tabindex="-1" style="width: 405px; height: 720px; background: #000000"></canvas>
+    <script src="Build/docs.loader.js"></script>
     <script>
-      const buildUrl = "Build";
-      const loaderUrl = buildUrl + "/docs.loader.js";
-      const config = {
-        dataUrl: buildUrl + "/docs.data",
-        frameworkUrl: buildUrl + "/docs.framework.js",
-        codeUrl: buildUrl + "/docs.wasm",
-        streamingAssetsUrl: "StreamingAssets",
-        companyName: "PolygonUs",
-        productName: "BunnyRunner_WebController",
-        productVersion: "1.0.0",
-      };
-
-      const container = document.querySelector("#unity-container");
-      const canvas = document.querySelector("#unity-canvas");
-      const loadingCover = document.querySelector("#loading-cover");
-      const progressBarEmpty = document.querySelector("#unity-progress-bar-empty");
-      const progressBarFull = document.querySelector("#unity-progress-bar-full");
-      const spinner = document.querySelector('.spinner');
-
       if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-        container.className = "unity-mobile";
-        config.devicePixelRatio = 1;
-      }
-      loadingCover.style.display = "";
+        // Mobile device style: fill the whole browser client area with the game canvas:
+        var meta = document.createElement('meta');
+        meta.name = 'viewport';
+        meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
+        document.getElementsByTagName('head')[0].appendChild(meta);
 
-      const script = document.createElement("script");
-      script.src = loaderUrl;
-      script.onload = () => {
-        config['webglContextAttributes'] = {
-          preserveDrawingBuffer: false,
-          powerPreference: 2
-        };
-        createUnityInstance(canvas, config, (progress) => {
-          spinner.style.display = "none";
-          progressBarEmpty.style.display = "";
-          progressBarFull.style.width = `${100 * progress}%`;
+        var canvas = document.querySelector("#unity-canvas");
+        canvas.style.width = "100%";
+        canvas.style.height = "100%";
+        canvas.style.position = "fixed";
+
+        document.body.style.textAlign = "left";
+      }
+
+      document.addEventListener('DOMContentLoaded', (event) => {
+        createUnityInstance(document.querySelector("#unity-canvas"), {
+          arguments: [],
+          dataUrl: "Build/docs.data",
+          frameworkUrl: "Build/docs.framework.js",
+          codeUrl: "Build/docs.wasm",
+          streamingAssetsUrl: "StreamingAssets",
+          companyName: "Polygonus",
+          productName: "Bunny Runner",
+          productVersion: "1.2.0",
+          // matchWebGLToCanvasSize: false, // Uncomment this to separately control WebGL canvas render size and DOM element size.
+          // devicePixelRatio: 1, // Uncomment this to override low DPI rendering on high DPI displays.
         }).then((unityInstance) => {
           window.unityInstance = unityInstance;
-          loadingCover.style.display = "none";
-        }).catch((message) => {
-          alert(message);
         });
-      };
-      document.body.appendChild(script);
-
-    </script>
-    <script src="https://www.gstatic.com/firebasejs/9.14.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/11.2.0/firebase-database-compat.js"></script>
-    <script>
-      const firebaseApp = firebase.initializeApp({
-        apiKey: "AIzaSyBBs0Fyx51ef1xmFhn_9ifMzo7zr_J4Zuo",
-        authDomain: "polygonus-fantarunner.firebaseapp.com",
-        databaseURL: "https://polygonus-fantarunner-default-rtdb.firebaseio.com",
-        projectId: "polygonus-fantarunner",
-        storageBucket: "polygonus-fantarunner.firebasestorage.app",
-        messagingSenderId: "181429508314",
-        appId: "1:181429508314:web:1c9d7fb549f39fedcfade3"
       });
     </script>
-  </body>
+    <script src="https://www.gstatic.com/firebasejs/9.14.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.2.0/firebase-database-compat.js"></script>  </body>
+  <script>
+    const firebaseApp = firebase.initializeApp({
+      apiKey: "AIzaSyBBs0Fyx51ef1xmFhn_9ifMzo7zr_J4Zuo",
+      authDomain: "polygonus-fantarunner.firebaseapp.com",
+      databaseURL: "https://polygonus-fantarunner-default-rtdb.firebaseio.com",
+      projectId: "polygonus-fantarunner",
+      storageBucket: "polygonus-fantarunner.firebasestorage.app",
+      messagingSenderId: "181429508314",
+      appId: "1:181429508314:web:1c9d7fb549f39fedcfade3"
+    });
+  </script>
 </html>
