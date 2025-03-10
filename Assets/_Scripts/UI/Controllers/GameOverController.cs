@@ -1,5 +1,5 @@
-using FirebaseCore.DTOs;
 using FirebaseCore.Senders;
+using FirebaseCore.DTOs;
 using UnityEngine.UI;
 using UnityEngine;
 using TMPro;
@@ -15,14 +15,12 @@ namespace UI.Controllers
         private int tweenId;
         
         GameStateSender gameStateSender;
-        UserSender userSender;
         GameStateDto gameStateDto;
 
         public override void OnCreation(RoomConfig roomConfig)
         {
             base.OnCreation(roomConfig);
             
-            userSender = new UserSender(roomConfig.roomName);
             gameStateSender = new GameStateSender(roomConfig.roomName);
             
             resetBtn.onClick.AddListener(OnReset);
@@ -30,22 +28,14 @@ namespace UI.Controllers
 
         public override void OnShow()
         {
-            tweenId = LeanTween.value(countdownTime, 0, countdownTime).setOnUpdate(val =>
-                countdownTxt.text = Mathf.CeilToInt(val).ToString()).setOnComplete(OnCountDown).uniqueId;
+            tweenId = LeanTween.value(countdownTime, 0, countdownTime).setOnUpdate(
+                value => countdownTxt.text = Mathf.CeilToInt(value).ToString()).id;
         }
 
         public override void OnHide()
         {
         }
 
-        private void OnCountDown()
-        {
-            userSender.Delete();
-            
-            gameStateDto.state = GameStates.Register;
-            gameStateSender.Send(gameStateDto);
-        }
-        
         private void OnReset()
         {
             LeanTween.cancel(tweenId);

@@ -1,5 +1,4 @@
 using FirebaseCore.Listeners;
-using FirebaseCore.Senders;
 using FirebaseCore.DTOs;
 using UnityEngine;
 
@@ -15,7 +14,6 @@ namespace UI.Controllers
 
         private ControllerBase currentMenu;
 
-        private GameStateSender gameStateSender;
         private GameStateListener gameStateListener;
 
         private void Awake()
@@ -31,17 +29,9 @@ namespace UI.Controllers
 
         private void Start()
         {
-            gameStateSender = new GameStateSender(roomConfig.roomName);
             gameStateListener = new GameStateListener(roomConfig.roomName);
 
             gameStateListener.OnDataReceived += OnStateChanged;
-
-            GameStateDto gameStateDto = new GameStateDto
-            {
-                state = GameStates.Register
-            };
-            
-            gameStateSender.Send(gameStateDto);
         }
 
         private void ShowPanel(ControllerBase panel)

@@ -1204,7 +1204,7 @@ MonoBehaviour:
   phoneInputField: {fileID: 1859705306}
   messagePopup: {fileID: 637667685}
   sendButton: {fileID: 1788270035}
-  mockRegisterData: {fileID: 11400000, guid: f2e2221610d68fe4ba9b11ce3a2c43f4, type: 2}
+  mockRegisterData: {fileID: 0}
 --- !u!1 &637667683
 GameObject:
   m_ObjectHideFlags: 0
