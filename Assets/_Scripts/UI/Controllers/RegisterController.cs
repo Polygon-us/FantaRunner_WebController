@@ -51,10 +51,10 @@ namespace UI.Controllers
         {
             RegisterDto registerDto = new RegisterDto
             {
-                name = nameInputField.Text,
-                username = usernameInputField.Text,
-                email = emailInputField.Text,
-                phone = phoneInputField.Text
+                name = nameInputField.Text.Trim(),
+                username = usernameInputField.Text.Trim(),
+                email = emailInputField.Text.Trim(),
+                phone = phoneInputField.Text.Trim()
             };
 
             ResultResponse<RegisterDto> validation = RegisterValidation.Validate(registerDto);
