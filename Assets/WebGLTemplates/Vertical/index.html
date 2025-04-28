@@ -51,7 +51,6 @@
       const spinner = document.querySelector('.spinner');
       const landscapeMsg = document.querySelector("#landscape-msg");
       var isMobile = 0;
-      var _unityInstance = null;
 
       if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
         // Mobile device style: fill the whole browser client area with the game canvas:
@@ -96,8 +95,8 @@
 
       function CheckDevice()
       {
-        if (typeof _unityInstance !== 'undefined' && _unityInstance !== null) {
-            _unityInstance.SendMessage('--Manager--', 'OnDeviceCheck', isMobile);
+        if (typeof window.unityInstance !== 'undefined' && window.unityInstance !== null) {
+            window.unityInstance.SendMessage('--Manager--', 'OnDeviceCheck', isMobile);
         } else {
             console.error("unityInstance is not defined or null");
         }
@@ -115,7 +114,7 @@
           progressBarEmpty.style.display = "";
           progressBarFull.style.width = `${100 * progress}%`;
         }).then((unityInstance) => {
-          _unityInstance = unityInstance;
+          window.unityInstance = unityInstance;
           loadingCover.style.display = "none";
         }).catch((message) => {
           alert(message);
