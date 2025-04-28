@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: MockRegisterData
   m_EditorClassIdentifier: 
   registerMockData:
-    name: juan
+    name: juan esteban
     username: Juaner_
     email: juanertest01@polygon.us
     phone: 0123456789

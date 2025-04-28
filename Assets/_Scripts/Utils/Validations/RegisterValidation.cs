@@ -18,16 +18,16 @@ namespace Utils.Validations
             if (!InputValidator.IsValidName(registerDto.name))
             {
                 return ResultResponse<RegisterDto>.Failure(
-                    "Nombre debe tener más de 3 caracteres.",
-                    "NAME_TOO_SHORT"
+                    "Nombre no debe contener caracteres especiales.",
+                    "NAME_WITH_SPECIAL_CHARS"
                 );
             }
             
-            if (!InputValidator.IsValidName(registerDto.username))
+            if (!InputValidator.IsValidUserName(registerDto.username))
             {
                 return ResultResponse<RegisterDto>.Failure(
-                    "Usuario debe taner más de 3 caracteres.",
-                    "NAME_TOO_SHORT"
+                    "Nombre de usuario no debe contener espacios.",
+                    "USERNAME_WHITESPACE"
                 );
             }
             

@@ -12,6 +12,11 @@ namespace Utils.Validations
 
         public static bool IsValidName(string name)
         {
+            return name.Length is >= 3 and <= 30 && Regex.IsMatch(name, "^[A-Za-z]+(?: [A-Za-z]+)*$");
+        }
+
+        public static bool IsValidUserName(string name)
+        {
             return name.Length is >= 3 and <= 30 && Regex.IsMatch(name, "^[a-zA-Z0-9_-]+$");
         }
 
